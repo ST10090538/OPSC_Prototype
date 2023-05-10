@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">OPSC Prototype</string>
+    <string name="progress">Progress</string>
+    <string name="leaderboard">Leaderboard</string>
+    <string name="personal_progress">Personal Progress</string>
+    <string name="hours_worked">Hours Worked</string>
+    <string name="timesheets">Timesheets</string>
+    <string name="todo">TODO</string>
+    <string name="january">January</string>
+    <string name="end">End</string>
+    <string name="start">Start</string>
+    <string name="new_timesheet">New Timesheet</string>
+    <string name="category">Category</string>
+    <string name="timesheet_name">Timesheet Name</string>
+    <string name="time_frame">Time Frame</string>
+    <string name="daily_goal">Daily Goal</string>
+    <string name="submit">Submit</string>
+    <string name="category_name">Category Name</string>
+    <string name="new_category">New Category</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+
+    <string-array name="spinner_options">
+        <item>App Development</item>
+        <item>Web Design</item>
+    </string-array>
+
+</resources>

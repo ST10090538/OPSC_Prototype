@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/colo6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="#00000000"
+        android:fontFamily="sans-serif-medium"
+        android:includeFontPadding="false"
+        android:text="Timesheet1"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/colo7"
+        android:layout_width="322dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="19dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/blue"
+        android:fontFamily="sans-serif-medium"
+        android:includeFontPadding="false"
+        android:text="New Task"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/colo6" />
+
+    <ScrollView
+        android:layout_width="341dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/newtask_profile_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/colo7">
+
+        <LinearLayout
+            android:layout_width="341dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/blue"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task Name"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+
+            <EditText
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/black"
+                android:importantForAutofill="no"
+                android:scrollHorizontally="false"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="Category"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+
+            <Spinner
+                android:id="@+id/categorySpinner"
+                android:layout_width="300dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/light_grey"
+                android:minHeight="48dp"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="110dp" />
+
+            <Button
+                android:id="@+id/newtask_new_category_button"
+                android:layout_width="300dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/light_grey"
+                android:drawableRight="@drawable/plus_icon"
+                android:text="New Category"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                app:cornerRadius="10dp"
+                tools:ignore="TextSizeCheck" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/time_frame"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/newtask_start_date"
+                    android:layout_width="101dp"
+                    android:layout_height="48dp"
+                    android:backgroundTint="@color/light_grey"
+                    android:text="Start Date"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="10sp"
+                    app:cornerRadius="10dp"
+                    tools:ignore="SmallSp" />
+
+                <Button
+                    android:id="@+id/newtask_end_date"
+                    android:layout_width="101dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="30dp"
+                    android:backgroundTint="@color/light_grey"
+                    android:text="End Date"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="10sp"
+                    app:cornerRadius="10dp"
+                    tools:ignore="SmallSp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/newtask_start_time"
+                    android:layout_width="101dp"
+                    android:layout_height="48dp"
+                    android:backgroundTint="@color/light_grey"
+                    android:text="Start Time"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="10sp"
+                    app:cornerRadius="10dp"
+                    tools:ignore="SmallSp" />
+
+                <Button
+                    android:id="@+id/newtask_end_time"
+                    android:layout_width="101dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="30dp"
+                    android:backgroundTint="@color/light_grey"
+                    android:text="End Time"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="10sp"
+                    app:cornerRadius="10dp"
+                    tools:ignore="SmallSp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/daily_goal"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/newtask_min_hours"
+                    android:layout_width="101dp"
+                    android:layout_height="48dp"
+                    android:backgroundTint="@color/light_grey"
+                    android:text="Min Hours"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="10sp"
+                    app:cornerRadius="10dp"
+                    tools:ignore="SmallSp" />
+
+                <Button
+                    android:id="@+id/newtask_max_hours"
+                    android:layout_width="101dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="30dp"
+                    android:backgroundTint="@color/light_grey"
+                    android:text="Max Hours"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="10sp"
+                    app:cornerRadius="10dp"
+                    tools:ignore="SmallSp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Description"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+
+            <EditText
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/black"
+                android:importantForAutofill="no"
+                android:scrollHorizontally="false"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Upload Image"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+
+            <ImageView
+                android:id="@+id/newtask_uploadimage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/uploadicon" />
+
+            <Button
+                android:id="@+id/newtask_submit_button"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="80dp"
+                android:backgroundTint="@color/light_grey"
+                android:text="Submit"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:cornerRadius="10dp"
+                tools:ignore="SmallSp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/newtask_profile_button"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/todo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/newtask_timesheet_button"
+        app:srcCompat="@drawable/profileblack" />
+
+    <ImageView
+        android:id="@+id/newtask_progress_button"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/todo"
+        android:src="@drawable/progressblack"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/newtask_timesheet_button"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/newtask_timesheet_button"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/todo"
+        android:src="@drawable/timehseetblue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/newtask_profile_button"
+        app:layout_constraintStart_toEndOf="@+id/newtask_progress_button" />
+</androidx.constraintlayout.widget.ConstraintLayout>

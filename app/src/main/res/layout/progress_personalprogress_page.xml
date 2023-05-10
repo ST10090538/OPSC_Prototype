@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbarStyle="insideInset"
+    android:background="@color/white"
+    android:scrollbarThumbHorizontal="@color/blue">
+
+    <TextView
+        android:id="@+id/colo4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="138dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="138dp"
+        android:background="#00000000"
+        android:contentDescription="@string/todo"
+        android:fontFamily="sans-serif-medium"
+        android:includeFontPadding="false"
+        android:text="@string/progress"
+        android:textColor="#000000"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/colo2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/colo2"
+        android:layout_width="322dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="33dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/blue"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:text="Personal Progress"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/colo4"
+        android:contentDescription="@string/todo"
+        tools:ignore="RtlCompat" />
+
+    <TextView
+        android:id="@+id/hoursworked_month"
+        android:layout_width="match_parent"
+        android:layout_height="27dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginBottom="15dp"
+        android:text="Hours Tracked"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/colo2" />
+
+    <Spinner
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginEnd="125dp"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hoursworked_month" />
+
+    <ImageView
+        android:id="@+id/personalprogress_progress_icon"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="166dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/personalprogress_timesheet_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/progressblue"
+        android:contentDescription="@string/todo" />
+
+    <ImageView
+        android:id="@+id/personalprogress_timesheet_icon"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="166dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/personalprogress_profile_icon"
+        app:layout_constraintStart_toEndOf="@+id/personalprogress_progress_icon"
+        android:contentDescription="@string/todo"
+        app:srcCompat="@drawable/timehseetblack" />
+
+    <ImageView
+        android:id="@+id/personalprogress_profile_icon"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="166dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/personalprogress_timesheet_icon"
+        android:contentDescription="@string/todo"
+        app:srcCompat="@drawable/profileblack" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="410dp"
+        android:layout_height="327dp"
+        android:layout_marginBottom="20dp"
+        android:contentDescription="@string/todo"
+        android:fillViewport="true"
+        android:keepScreenOn="false"
+        android:scrollbarAlwaysDrawHorizontalTrack="false"
+        android:scrollbarAlwaysDrawVerticalTrack="false"
+        android:scrollbarFadeDuration="0"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbarThumbHorizontal="@color/blue"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/personalprogress_progress_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingClass">
+
+
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
