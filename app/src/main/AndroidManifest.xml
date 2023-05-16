@@ -21,6 +21,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".LoginPage" />
+        <activity
+            android:name=".RegisterPage" />
+        <activity
+            android:name=".TimesheetPage" />
+        <activity
+            android:name=".ProgressPage" />
+        <activity
+            android:name=".ProfilePage" />
+        <activity
+            android:name=".NewTimesheetPage" />
+        <activity
+            android:name=".NewCategoryPage" />
+        <activity
+            android:name=".TimesheetViewPage" />
+        <activity
+            android:name=".PersonalProgressPage" />
+        <activity
+            android:name=".NewTaskPage" />
     </application>
 
 </manifest>
