@@ -5,20 +5,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+
+/*
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-
+*/
 class PersonalProgressPage : AppCompatActivity() {
-    lateinit var pieChart: PieChart
+    //lateinit var pieChart: PieChart
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.progress_personalprogress_page)
 
-        //------------
 
+/*
 
         pieChart = findViewById(R.id.pie_chart)
 
@@ -34,7 +36,7 @@ class PersonalProgressPage : AppCompatActivity() {
         pieChart.data = pieData
         pieChart.invalidate()
 
-    //--------------
+*/
 
         val progressIcon = findViewById<ImageView>(R.id.personalprogress_progress_icon)
         val profileIcon = findViewById<ImageView>(R.id.personalprogress_profile_icon)
