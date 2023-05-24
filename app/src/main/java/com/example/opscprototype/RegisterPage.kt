@@ -13,9 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 class RegisterPage : AppCompatActivity() {
 
 
-    private lateinit var editText2: EditText
+   /* private lateinit var editText2: EditText
     private lateinit var editTextTextPassword: EditText
-    private lateinit var editTextTextPassword2: EditText
+    private lateinit var editTextTextPassword2: EditText */
     private lateinit var registerpage_register_button: Button
 
 
@@ -41,13 +41,13 @@ class RegisterPage : AppCompatActivity() {
         provinceSpinner.adapter = adapter
 
 
-        editText2 = findViewById(R.id.editText2)
+      /*  editText2 = findViewById(R.id.editText2)
         editTextTextPassword = findViewById(R.id.editTextTextPassword)
-        editTextTextPassword2 = findViewById(R.id.editTextTextPassword2)
+        editTextTextPassword2 = findViewById(R.id.editTextTextPassword2)*/
         registerpage_register_button = findViewById(R.id.registerpage_register_button)
 
         registerpage_register_button.setOnClickListener {
-            val username = editText2.text.toString().trim()
+          /*  val username = editText2.text.toString().trim()
             val password = editTextTextPassword.text.toString().trim()
             val confpass = editTextTextPassword2.text.toString().trim()
 
@@ -78,18 +78,18 @@ class RegisterPage : AppCompatActivity() {
                 editTextTextPassword2.error = "Password does not match!"
             }
             // validation if passwords match
-            if (password == confpass) {
+            if (password == confpass) { */
 
                 Toast.makeText(this, "Registered Successfully!", Toast.LENGTH_SHORT).show()
 
                 val intent = Intent(this, LoginPage::class.java)
-                intent.putExtra("username", username)
-                intent.putExtra("password", password)
+              // intent.putExtra("username", username)
+               // intent.putExtra("password", password)
                 startActivity(intent)
                 finish()
-            } else {
+           /* } else {
                 editTextTextPassword2.error = "Password does not match!"
-            }
+            }*/
 
         }
     }

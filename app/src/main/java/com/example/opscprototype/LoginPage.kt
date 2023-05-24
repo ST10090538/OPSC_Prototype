@@ -10,27 +10,28 @@ import androidx.appcompat.app.AppCompatActivity
 
 class LoginPage : AppCompatActivity() {
 
+    /*
     private lateinit var editText2: EditText
-    private lateinit var editTextTextPassword: EditText
+    private lateinit var editTextTextPassword: EditText */
     private lateinit var loginpage_login_button: Button
     private lateinit var registerpage_register_button: Button
 
-    private var registeredUsername: String? = null
-    private var registeredPassword: String? = null
+   /* private var registeredUsername: String? = null
+    private var registeredPassword: String? = null*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_page)
 
-        editText2 = findViewById(R.id.editText2)
-        editTextTextPassword = findViewById(R.id.editTextTextPassword)
+      /*  editText2 = findViewById(R.id.editText2)
+        editTextTextPassword = findViewById(R.id.editTextTextPassword)*/
         loginpage_login_button = findViewById(R.id.loginpage_login_button)
         registerpage_register_button = findViewById(R.id.registerpage_register_button)
 
         registerpage_register_button.setOnClickListener {
             startActivity(Intent(this, RegisterPage::class.java))
         }
-
+/*
         val extras = intent.extras
         if (extras != null) {
             registeredUsername = extras.getString("username")
@@ -51,11 +52,13 @@ class LoginPage : AppCompatActivity() {
                 Toast.makeText(this, "Invalid username or password!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             } else {
-                Toast.makeText(this, "Logged In Successfully!", Toast.LENGTH_SHORT).show()
+               */ Toast.makeText(this, "Logged In Successfully!", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, TimesheetPage::class.java)
                 startActivity(intent)
                 finish()
             }
+
+
         }
-    }
-}
+ //   }
+//}
