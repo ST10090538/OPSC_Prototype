@@ -2,8 +2,10 @@ package com.example.opscprototype
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.opscprototype.SharedData
 
 class TimesheetViewPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,6 +16,7 @@ class TimesheetViewPage : AppCompatActivity() {
         val profileIcon = findViewById<ImageView>(R.id.timesheetview_profile_button)
         val timesheetIcon = findViewById<ImageView>(R.id.timesheetview_timesheet_button)
         val newTask = findViewById<ImageView>(R.id.timesheetview_newtask_button)
+
 
         progressIcon.setOnClickListener {
             startActivity(Intent(this, ProgressPage::class.java))
@@ -28,7 +31,9 @@ class TimesheetViewPage : AppCompatActivity() {
         }
 
         newTask.setOnClickListener {
-            startActivity(Intent(this, NewTaskPage::class.java))
+            val intent = Intent(this, NewTaskPage::class.java)
+            intent.putExtra("newCat", "")
+            startActivity(intent)
         }
     }
 }

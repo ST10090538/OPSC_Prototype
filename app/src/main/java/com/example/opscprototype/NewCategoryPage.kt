@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 
 class NewCategoryPage : AppCompatActivity() {
@@ -24,7 +25,11 @@ class NewCategoryPage : AppCompatActivity() {
         }
 
         submitButton.setOnClickListener {
-            startActivity(Intent(this, NewTaskPage::class.java))
+            val newCat = findViewById<EditText>(R.id.txtNewCatName).text.toString()
+            val intent = Intent()
+            intent.putExtra("newCat", newCat)
+            setResult(RESULT_OK, intent)
+            finish()
         }
     }
 }
