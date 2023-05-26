@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
@@ -13,6 +14,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.opscprototype.SharedData
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -24,6 +27,7 @@ class NewTaskPage: AppCompatActivity() {
         private const val PICK_IMAGE_REQUEST = 1
         private const val REQUEST_IMAGE_CAPTURE = 2
         private const val REQUEST_NEW_CATEGORY = 3
+        private const val CAMERA_PERMISSION_REQUEST_CODE = 4
     }
     private var categories: Array<String> = arrayOf("Web Design", "App Development") // Initial categories
     private var newCat: String? = null
@@ -240,8 +244,32 @@ class NewTaskPage: AppCompatActivity() {
     }
 
     private fun takePhotoFromCamera() {
+        // Check camera permission
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            // Permission not granted, request it
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+        } else {
+            // Permission already granted, proceed with camera intent
+            takePhotoFromCamera()
+        }
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Camera permission granted, proceed with camera intent
+                takePhotoFromCamera()
+            } else {
+                // Camera permission denied, show an error message or handle it accordingly
+            }
+        }
     }
 
     //Updates the categories
