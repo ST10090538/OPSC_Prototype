@@ -203,34 +203,85 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:gravity="center">
+                android:orientation="vertical"
+                android:layout_marginTop="30dp">
 
-                <Button
-                    android:id="@+id/newtask_min_hours"
-                    android:layout_width="101dp"
-                    android:layout_height="48dp"
-                    android:backgroundTint="@color/light_grey"
-                    android:text="Min Hours"
-                    android:textAlignment="center"
-                    android:textColor="#000000"
-                    android:textSize="10sp"
-                    app:cornerRadius="10dp"
-                    tools:ignore="SmallSp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/newtask_max_hours"
-                    android:layout_width="101dp"
-                    android:layout_height="48dp"
-                    android:layout_marginLeft="30dp"
-                    android:backgroundTint="@color/light_grey"
-                    android:text="Max Hours"
-                    android:textAlignment="center"
-                    android:textColor="#000000"
-                    android:textSize="10sp"
-                    app:cornerRadius="10dp"
-                    tools:ignore="SmallSp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Minimum Hours"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+
+                        <SeekBar
+                            android:id="@+id/skMinHours"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:max="24" />
+
+
+                        <TextView
+                            android:id="@+id/minimumHoursTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="0 hours"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Maximum Hours"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+
+                        <SeekBar
+                            android:id="@+id/skMaxHours"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:max="24" />
+
+
+                        <TextView
+                            android:id="@+id/maximumHoursTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text=" 0 hours"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
             </LinearLayout>
+
+
 
             <TextView
                 android:layout_width="match_parent"
@@ -283,6 +334,8 @@
                 android:textSize="20sp"
                 app:cornerRadius="10dp"
                 tools:ignore="SmallSp" />
+
+
         </LinearLayout>
     </ScrollView>
 

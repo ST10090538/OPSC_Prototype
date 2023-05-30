@@ -12,7 +12,9 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.SeekBar
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -107,49 +109,37 @@ class NewTaskPage: AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        //Set min daily goal
-        findViewById<Button>(R.id.newtask_min_hours).setOnClickListener(){
-            val dialogBuilder = AlertDialog.Builder(this)
-            val inflater = layoutInflater
-            val dialogView = inflater.inflate(R.layout.dialog_input, null)
-            val editText = dialogView.findViewById<EditText>(R.id.txtNewCatName)
+        // Set min daily goal
+        findViewById<SeekBar>(R.id.skMinHours).setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                minHours = progress.toDouble()
+                val minHoursTextView = findViewById<TextView>(R.id.minimumHoursTextView)
+                minHoursTextView.text = "$minHours Hours"
+            }
 
-            dialogBuilder.setView(dialogView)
-            dialogBuilder.setTitle("Enter Minimum Daily Goal Hours")
-            dialogBuilder.setPositiveButton("OK") { dialog, which ->
-                val inputText = editText.text.toString()
-                minHours = inputText.toDoubleOrNull() ?: 0.0
-                val btnMinHours = findViewById<Button>(R.id.newtask_min_hours)
-                btnMinHours.text = minHours.toString() + " Hours"
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
             }
-            dialogBuilder.setNegativeButton("Cancel") { dialog, which ->
-                // Handle cancellation if needed
-            }
-            val dialog = dialogBuilder.create()
-            dialog.show()
-        }
 
-        //Set max daily goal
-        findViewById<Button>(R.id.newtask_max_hours).setOnClickListener(){
-            val dialogBuilder = AlertDialog.Builder(this)
-            val inflater = layoutInflater
-            val dialogView = inflater.inflate(R.layout.dialog_input, null)
-            val editText = dialogView.findViewById<EditText>(R.id.txtNewCatName)
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+        })
 
-            dialogBuilder.setView(dialogView)
-            dialogBuilder.setTitle("Enter Maximum Daily Goal Hours")
-            dialogBuilder.setPositiveButton("OK") { dialog, which ->
-                val inputText = editText.text.toString()
-                maxHours = inputText.toDoubleOrNull() ?: 0.0
-                val btnMaxHours = findViewById<Button>(R.id.newtask_max_hours)
-                btnMaxHours.text = maxHours.toString() + " Hours"
+        // Set max daily goal
+        findViewById<SeekBar>(R.id.skMaxHours).setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                maxHours = progress.toDouble()
+                val maxHoursTextView = findViewById<TextView>(R.id.maximumHoursTextView)
+                maxHoursTextView.text = "$maxHours Hours"
             }
-            dialogBuilder.setNegativeButton("Cancel") { dialog, which ->
-                // Handle cancellation if needed
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
             }
-            val dialog = dialogBuilder.create()
-            dialog.show()
-        }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+        })
+
+
 
         //Set task start time
         findViewById<Button>(R.id.newtask_start_time).setOnClickListener(){
@@ -250,11 +240,11 @@ class NewTaskPage: AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
         } else {
             // Permission already granted, proceed with camera intent
-            takePhotoFromCamera()
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
         }
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
     }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
