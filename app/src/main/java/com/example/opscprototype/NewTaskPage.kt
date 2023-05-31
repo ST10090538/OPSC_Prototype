@@ -77,7 +77,7 @@ class NewTaskPage: AppCompatActivity() {
                     val formattedDate = String.format("%04d/%02d/%02d", selectedYear, selectedMonth + 1, selectedDay)
                     startDate = SimpleDateFormat("yyyy/MM/dd").parse(formattedDate)
                     val btnStartDate = findViewById<Button>(R.id.newtask_start_date)
-                    btnStartDate.text = startDate.toString()
+                    btnStartDate.text = formattedDate
                 },
                 year,
                 month,
@@ -100,7 +100,7 @@ class NewTaskPage: AppCompatActivity() {
                     val formattedDate = String.format("%04d/%02d/%02d", selectedYear, selectedMonth + 1, selectedDay)
                     endDate = SimpleDateFormat("yyyy/MM/dd").parse(formattedDate)
                     val btnEndDate = findViewById<Button>(R.id.newtask_end_date)
-                    btnEndDate.text = endDate.toString()
+                    btnEndDate.text = formattedDate
                 },
                 year,
                 month,

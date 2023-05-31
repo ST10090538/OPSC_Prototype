@@ -1,6 +1,10 @@
 package com.example.opscprototype
 
 import android.graphics.Bitmap
+import android.os.Build
+import androidx.annotation.RequiresApi
+import java.sql.Time
+import java.time.Duration
 import java.util.Date
 
 class Tasks (
@@ -18,4 +22,6 @@ class Tasks (
     var strCategory = strCategory
     var strTaskName = strTaskName
     var imgPicture = imgPicture
+    @RequiresApi(Build.VERSION_CODES.O)
+    var durTimeWorked = Duration.ZERO
 }
