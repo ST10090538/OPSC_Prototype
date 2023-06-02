@@ -179,6 +179,7 @@ class TimesheetViewPage : AppCompatActivity() {
                     val totalDuration = task.durTimeWorked.plus(elapsedTimeDuration)
                     // Update the hours worked attribute of the respective task
                     task.durTimeWorked = totalDuration
+                    task.updateCategoryHoursWorked(SharedData.lstCategories)
                     val hours = totalDuration.toHours()
                     val minutes = (totalDuration.toMinutes() % 60)
                     val seconds = (totalDuration.seconds % 60)

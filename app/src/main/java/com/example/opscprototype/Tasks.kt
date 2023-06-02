@@ -24,4 +24,13 @@ class Tasks (
     var imgPicture = imgPicture
     @RequiresApi(Build.VERSION_CODES.O)
     var durTimeWorked = Duration.ZERO
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun updateCategoryHoursWorked(categoriesList: List<categories>) {
+        val matchingCategories = categoriesList.filter { it.strName == strCategory }
+        if (matchingCategories.isNotEmpty()) {
+            val category = matchingCategories.first()
+            category.hoursWorked = category.hoursWorked.plus(durTimeWorked)
+        }
+    }
 }

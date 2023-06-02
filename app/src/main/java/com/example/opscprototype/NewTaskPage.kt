@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.Locale.Category
 
 class NewTaskPage: AppCompatActivity() {
     companion object {
@@ -31,7 +32,7 @@ class NewTaskPage: AppCompatActivity() {
         private const val REQUEST_NEW_CATEGORY = 3
         private const val CAMERA_PERMISSION_REQUEST_CODE = 4
     }
-    private var categories: Array<String> = arrayOf("Web Design", "App Development") // Initial categories
+    private var cats: List<String> = emptyList()
     private var newCat: String? = null
     private lateinit var categorySpinner: Spinner
     var imgPicture: Bitmap? = null
@@ -52,15 +53,25 @@ class NewTaskPage: AppCompatActivity() {
         var maxHours = 0.00
         var startTime = ""
         var endTime = ""
+        var categoryList = SharedData.lstCategories
+
+        if(categoryList.count() < 2) {
+            SharedData.lstCategories += categories("Web design")
+            SharedData.lstCategories += categories("App development")
+        }
 
 
         //Adds the new category to the array
         if(newCat != "")
-            categories += newCat.toString()
+            SharedData.lstCategories += categories(newCat.toString())
 
         categorySpinner = findViewById(R.id.categorySpinner)
+        cats = emptyList()
+        for(i in SharedData.lstCategories){
+            cats += i.strName
+        }
 
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, cats)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categorySpinner.adapter = adapter
 
@@ -264,7 +275,7 @@ class NewTaskPage: AppCompatActivity() {
 
     //Updates the categories
     private fun updateCategorySpinner() {
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, cats)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categorySpinner.adapter = adapter
     }
@@ -284,7 +295,11 @@ class NewTaskPage: AppCompatActivity() {
                 REQUEST_NEW_CATEGORY -> {
                     val newCat = data?.getStringExtra("newCat")
                     newCat?.let {
-                        categories += it
+                        SharedData.lstCategories += categories(newCat)
+                        cats = emptyList()
+                        for(i in SharedData.lstCategories){
+                            cats += i.strName
+                        }
                         updateCategorySpinner()
                     }
                 }
