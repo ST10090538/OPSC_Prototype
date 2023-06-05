@@ -5,7 +5,7 @@
     android:id="@+id/welcomePage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue">
+    android:background="#2D2D30">
 
     <ImageView
         android:id="@+id/imageView"
