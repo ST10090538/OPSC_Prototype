@@ -17,7 +17,8 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import java.time.Duration
-
+import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.components.Legend
 
 class PersonalProgressPage : AppCompatActivity(), OnChartValueSelectedListener {
     private lateinit var pieChart: PieChart
@@ -29,11 +30,12 @@ class PersonalProgressPage : AppCompatActivity(), OnChartValueSelectedListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.progress_personalprogress_page)
         pieChart = findViewById(R.id.pie_chart)
+
         val progressIcon = findViewById<ImageView>(R.id.personalprogress_progress_icon)
         val profileIcon = findViewById<ImageView>(R.id.personalprogress_profile_icon)
         val timesheetIcon = findViewById<ImageView>(R.id.personalprogress_timesheet_icon)
 
-        val categories = SharedData.lstCategories
+        SharedData.lstCategories
         val entries = mutableListOf<PieEntry>()
         var totalHoursWorked = Duration.ZERO
 
@@ -55,7 +57,7 @@ class PersonalProgressPage : AppCompatActivity(), OnChartValueSelectedListener {
         val data = PieData(dataSet)
         data.setValueFormatter(PercentFormatter(pieChart))
         data.setValueTextSize(11f)
-        data.setValueTextColor(Color.BLACK)
+        data.setValueTextColor(Color.WHITE)
 
         pieChart.data = data
         pieChart.highlightValues(null)
@@ -74,6 +76,19 @@ class PersonalProgressPage : AppCompatActivity(), OnChartValueSelectedListener {
         timesheetIcon.setOnClickListener {
             startActivity(Intent(this, TimesheetPage::class.java))
         }
+
+// Get the chart's description object
+        val description = Description()
+        description.text = ""
+        description.textColor = Color.WHITE
+// Set the color of the description labels to white
+        pieChart.description = description
+        pieChart.description.textColor = Color.WHITE
+        pieChart.description = description
+// Set the text color of the legend labels to white
+        val legend = pieChart.legend
+        legend.textColor = Color.WHITE
+
     }
 
     private fun getColors(categoryCount: Int): List<Int> {
@@ -102,7 +117,7 @@ class PersonalProgressPage : AppCompatActivity(), OnChartValueSelectedListener {
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onNothingSelected() {
         if (displayTasks) {
-            val categories = SharedData.lstCategories
+            SharedData.lstCategories
             val entries = mutableListOf<PieEntry>()
             var totalHoursWorked = Duration.ZERO
 
@@ -124,7 +139,7 @@ class PersonalProgressPage : AppCompatActivity(), OnChartValueSelectedListener {
             val data = PieData(dataSet)
             data.setValueFormatter(PercentFormatter(pieChart))
             data.setValueTextSize(11f)
-            data.setValueTextColor(Color.BLACK)
+            data.setValueTextColor(Color.WHITE)
 
             pieChart.data = data
             pieChart.highlightValues(null)
@@ -154,17 +169,19 @@ class PersonalProgressPage : AppCompatActivity(), OnChartValueSelectedListener {
         }
 
         val dataSet = PieDataSet(entries, "")
-        dataSet.sliceSpace = 3f
-        dataSet.selectionShift = 5f
+        dataSet.sliceSpace = 30f
+        dataSet.selectionShift = 3f
         dataSet.colors = getColors(tasks.size)
 
         val data = PieData(dataSet)
         data.setValueFormatter(PercentFormatter(pieChart))
         data.setValueTextSize(11f)
-        data.setValueTextColor(Color.BLACK)
+        data.setValueTextColor(Color.WHITE)
 
         pieChart.data = data
         pieChart.highlightValues(null)
         pieChart.invalidate()
     }
+
+
 }

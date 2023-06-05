@@ -1,5 +1,6 @@
 package com.example.opscprototype
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -18,25 +19,25 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.opscprototype.SharedData
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
-import java.util.Locale.Category
 
+
+@Suppress("DEPRECATION")
 class NewTaskPage: AppCompatActivity() {
     companion object {
-        private const val PICK_IMAGE_REQUEST = 1
-        private const val REQUEST_IMAGE_CAPTURE = 2
-        private const val REQUEST_NEW_CATEGORY = 3
-        private const val CAMERA_PERMISSION_REQUEST_CODE = 4
+        const val PICK_IMAGE_REQUEST = 1
+        const val REQUEST_IMAGE_CAPTURE = 2
+        const val REQUEST_NEW_CATEGORY = 3
+        const val CAMERA_PERMISSION_REQUEST_CODE = 4
     }
     private var cats: List<String> = emptyList()
     private var newCat: String? = null
     private lateinit var categorySpinner: Spinner
-    var imgPicture: Bitmap? = null
+    private var imgPicture: Bitmap? = null
 
+    @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_task_page)
@@ -53,7 +54,7 @@ class NewTaskPage: AppCompatActivity() {
         var maxHours = 0.00
         var startTime = ""
         var endTime = ""
-        var categoryList = SharedData.lstCategories
+        val categoryList = SharedData.lstCategories
 
         if(categoryList.count() < 2) {
             SharedData.lstCategories += categories("Web design")
@@ -68,7 +69,7 @@ class NewTaskPage: AppCompatActivity() {
         categorySpinner = findViewById(R.id.categorySpinner)
         cats = emptyList()
         for(i in SharedData.lstCategories){
-            cats += i.strName
+            cats = cats + i.strName
         }
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, cats)
@@ -76,7 +77,7 @@ class NewTaskPage: AppCompatActivity() {
         categorySpinner.adapter = adapter
 
         //Allow the user to pick a start date
-        findViewById<Button>(R.id.newtask_start_date).setOnClickListener(){
+        findViewById<Button>(R.id.newtask_start_date).setOnClickListener {
             val currentDate = Calendar.getInstance()
             val year = currentDate.get(Calendar.YEAR)
             val month = currentDate.get(Calendar.MONTH)
@@ -84,9 +85,9 @@ class NewTaskPage: AppCompatActivity() {
 
             val datePickerDialog = DatePickerDialog(
                 this,
-                DatePickerDialog.OnDateSetListener { _, selectedYear, selectedMonth, selectedDay ->
+                { _, selectedYear, selectedMonth, selectedDay ->
                     val formattedDate = String.format("%04d/%02d/%02d", selectedYear, selectedMonth + 1, selectedDay)
-                    startDate = SimpleDateFormat("yyyy/MM/dd").parse(formattedDate)
+                    startDate = SimpleDateFormat("yyyy/MM/dd").parse(formattedDate) as Date
                     val btnStartDate = findViewById<Button>(R.id.newtask_start_date)
                     btnStartDate.text = formattedDate
                 },
@@ -99,7 +100,7 @@ class NewTaskPage: AppCompatActivity() {
 
 
         //Allow the user to pick an end date
-        findViewById<Button>(R.id.newtask_end_date).setOnClickListener(){
+        findViewById<Button>(R.id.newtask_end_date).setOnClickListener {
             val currentDate = Calendar.getInstance()
             val year = currentDate.get(Calendar.YEAR)
             val month = currentDate.get(Calendar.MONTH)
@@ -107,9 +108,9 @@ class NewTaskPage: AppCompatActivity() {
 
             val datePickerDialog = DatePickerDialog(
                 this,
-                DatePickerDialog.OnDateSetListener { _, selectedYear, selectedMonth, selectedDay ->
+                { _, selectedYear, selectedMonth, selectedDay ->
                     val formattedDate = String.format("%04d/%02d/%02d", selectedYear, selectedMonth + 1, selectedDay)
-                    endDate = SimpleDateFormat("yyyy/MM/dd").parse(formattedDate)
+                    endDate = SimpleDateFormat("yyyy/MM/dd").parse(formattedDate) as Date
                     val btnEndDate = findViewById<Button>(R.id.newtask_end_date)
                     btnEndDate.text = formattedDate
                 },
@@ -122,6 +123,7 @@ class NewTaskPage: AppCompatActivity() {
 
         // Set min daily goal
         findViewById<SeekBar>(R.id.skMinHours).setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 minHours = progress.toDouble()
                 val minHoursTextView = findViewById<TextView>(R.id.minimumHoursTextView)
@@ -137,6 +139,7 @@ class NewTaskPage: AppCompatActivity() {
 
         // Set max daily goal
         findViewById<SeekBar>(R.id.skMaxHours).setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 maxHours = progress.toDouble()
                 val maxHoursTextView = findViewById<TextView>(R.id.maximumHoursTextView)
@@ -153,14 +156,14 @@ class NewTaskPage: AppCompatActivity() {
 
 
         //Set task start time
-        findViewById<Button>(R.id.newtask_start_time).setOnClickListener(){
+        findViewById<Button>(R.id.newtask_start_time).setOnClickListener {
             val currentTime = Calendar.getInstance()
             val hour = currentTime.get(Calendar.HOUR_OF_DAY)
             val minute = currentTime.get(Calendar.MINUTE)
 
             val timePickerDialog = TimePickerDialog(
                 this,
-                TimePickerDialog.OnTimeSetListener { _, selectedHour, selectedMinute ->
+                { _, selectedHour, selectedMinute ->
                     // Store the selected time in a variable
                     startTime = String.format("%02d:%02d", selectedHour, selectedMinute)
                     val btnStartTime = findViewById<Button>(R.id.newtask_start_time)
@@ -174,14 +177,14 @@ class NewTaskPage: AppCompatActivity() {
         }
 
         // Set task end time
-        findViewById<Button>(R.id.newtask_end_time).setOnClickListener(){
+        findViewById<Button>(R.id.newtask_end_time).setOnClickListener {
             val currentTime = Calendar.getInstance()
             val hour = currentTime.get(Calendar.HOUR_OF_DAY)
             val minute = currentTime.get(Calendar.MINUTE)
 
             val timePickerDialog = TimePickerDialog(
                 this,
-                TimePickerDialog.OnTimeSetListener { _, selectedHour, selectedMinute ->
+                { _, selectedHour, selectedMinute ->
                     // Store the selected time in a variable
                     endTime = String.format("%02d:%02d", selectedHour, selectedMinute)
                     val btnEndTime = findViewById<Button>(R.id.newtask_end_time)
@@ -279,6 +282,7 @@ class NewTaskPage: AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categorySpinner.adapter = adapter
     }
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
@@ -298,7 +302,7 @@ class NewTaskPage: AppCompatActivity() {
                         SharedData.lstCategories += categories(newCat)
                         cats = emptyList()
                         for(i in SharedData.lstCategories){
-                            cats += i.strName
+                            cats = cats + i.strName
                         }
                         updateCategorySpinner()
                     }

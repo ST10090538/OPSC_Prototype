@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="#2D2D30">
 
     <TextView
         android:id="@+id/colo6"
@@ -16,7 +16,7 @@
         android:includeFontPadding="false"
         android:text="Timesheet1"
         android:textAlignment="center"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -31,7 +31,7 @@
         android:layout_marginTop="14dp"
         android:layout_marginEnd="19dp"
         android:background="@drawable/rounded_button"
-        android:backgroundTint="#249EE4"
+        android:backgroundTint="#84CDF8"
         android:fontFamily="sans-serif-medium"
         android:includeFontPadding="false"
         android:text="New Task"
@@ -49,16 +49,18 @@
         android:layout_height="500dp"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/blue"
         app:layout_constraintBottom_toTopOf="@+id/newtask_profile_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/colo7">
+        app:layout_constraintTop_toBottomOf="@+id/colo7"
+        app:layout_constraintVertical_bias="0.393">
 
         <LinearLayout
             android:layout_width="341dp"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#249EE4"
+            android:backgroundTint="@color/blue"
             android:orientation="vertical">
 
             <TextView
@@ -97,10 +99,10 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/rounded_button"
-                android:backgroundTint="@color/light_grey"
+                android:backgroundTint="#2D2D30"
                 android:minHeight="48dp"
                 android:textAlignment="center"
-                android:textColor="@android:color/black"
+                android:textColor="@color/white"
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="110dp" />
 
@@ -110,10 +112,11 @@
                 android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:backgroundTint="@color/light_grey"
+                android:backgroundTint="#2D2D30"
                 android:drawableRight="@drawable/plus_icon"
+                android:drawableTint="#FFFFFF"
                 android:text="New Category"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="15dp"
                 app:cornerRadius="10dp"
                 tools:ignore="TextSizeCheck" />
@@ -137,10 +140,10 @@
                     android:id="@+id/newtask_start_date"
                     android:layout_width="101dp"
                     android:layout_height="48dp"
-                    android:backgroundTint="@color/light_grey"
+                    android:backgroundTint="#2D2D30"
                     android:text="Start Date"
                     android:textAlignment="center"
-                    android:textColor="#000000"
+                    android:textColor="#FFFFFF"
                     android:textSize="10sp"
                     app:cornerRadius="10dp"
                     tools:ignore="SmallSp" />
@@ -150,12 +153,13 @@
                     android:layout_width="101dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="30dp"
-                    android:backgroundTint="@color/light_grey"
+                    android:backgroundTint="#2D2D30"
                     android:text="End Date"
                     android:textAlignment="center"
-                    android:textColor="#000000"
+                    android:textColor="#FFFFFF"
                     android:textSize="10sp"
                     app:cornerRadius="10dp"
+                    app:iconTint="#2D2D30"
                     tools:ignore="SmallSp" />
             </LinearLayout>
 
@@ -169,10 +173,10 @@
                     android:id="@+id/newtask_start_time"
                     android:layout_width="101dp"
                     android:layout_height="48dp"
-                    android:backgroundTint="@color/light_grey"
+                    android:backgroundTint="#2D2D30"
                     android:text="Start Time"
                     android:textAlignment="center"
-                    android:textColor="#000000"
+                    android:textColor="#FFFFFF"
                     android:textSize="10sp"
                     app:cornerRadius="10dp"
                     tools:ignore="SmallSp" />
@@ -182,10 +186,10 @@
                     android:layout_width="101dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="30dp"
-                    android:backgroundTint="@color/light_grey"
+                    android:backgroundTint="#2D2D30"
                     android:text="End Time"
                     android:textAlignment="center"
-                    android:textColor="#000000"
+                    android:textColor="#FFFFFF"
                     android:textSize="10sp"
                     app:cornerRadius="10dp"
                     tools:ignore="SmallSp" />
@@ -230,7 +234,8 @@
                             android:id="@+id/skMinHours"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:max="24" />
+                            android:max="24"
+                            android:thumbTint="#FFFFFF" />
 
 
                         <TextView
@@ -263,7 +268,9 @@
                             android:id="@+id/skMaxHours"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:max="24" />
+                            android:max="24"
+                            android:thumbTint="#FFFFFF"
+                            android:tickMarkTint="#FFFFFF" />
 
 
                         <TextView
@@ -326,10 +333,10 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="80dp"
-                android:backgroundTint="@color/light_grey"
+                android:backgroundTint="#2D2D30"
                 android:text="Submit"
                 android:textAlignment="center"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 app:cornerRadius="10dp"
                 tools:ignore="SmallSp" />
@@ -346,6 +353,7 @@
         android:layout_marginEnd="45dp"
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/todo"
+        android:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/newtask_timesheet_button"
@@ -360,6 +368,7 @@
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/todo"
         android:src="@drawable/progressblack"
+        android:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/newtask_timesheet_button"
         app:layout_constraintStart_toStartOf="parent" />
@@ -371,6 +380,7 @@
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/todo"
         android:src="@drawable/timehseetblue"
+        android:tint="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/newtask_profile_button"
         app:layout_constraintStart_toEndOf="@+id/newtask_progress_button" />

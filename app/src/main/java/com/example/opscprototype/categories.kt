@@ -9,6 +9,7 @@ class categories (strCatName: String){
     @RequiresApi(Build.VERSION_CODES.O)
     var hoursWorked = Duration.ZERO
     val strName = strCatName
+
     fun addCategory(category: categories) {
         categories.add(category)
     }

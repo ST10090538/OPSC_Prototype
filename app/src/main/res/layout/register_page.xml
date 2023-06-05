@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="#2D2D30">
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -13,27 +13,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="0dp"
-            android:layout_marginBottom="-50dp"
-            app:srcCompat="@drawable/blue_fade" />
-
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_marginTop="-50dp"
-            android:rotation="180"
-            app:srcCompat="@drawable/blue_fade" />
-    </FrameLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/colo6"
@@ -45,7 +25,7 @@
         android:includeFontPadding="false"
         android:text="Register"
         android:textAlignment="center"
-        android:textColor="#000000"
+        android:textColor="@color/white"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -61,7 +41,7 @@
         android:layout_marginEnd="197dp"
         android:layout_marginBottom="12dp"
         android:text="Username"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/editText2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,10 +53,10 @@
         android:id="@+id/provinceSpinner"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:foregroundTint="@color/black"
         android:layout_marginBottom="39dp"
         android:background="@drawable/rounded_button"
         android:backgroundTint="@color/light_grey"
+        android:foregroundTint="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/registerpage_register_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
@@ -123,7 +103,7 @@
         android:layout_marginEnd="197dp"
         android:layout_marginBottom="14dp"
         android:text="Password"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword"
         app:layout_constraintEnd_toEndOf="parent"
@@ -139,7 +119,7 @@
         android:layout_marginEnd="215dp"
         android:layout_marginBottom="14dp"
         android:text="Province"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/provinceSpinner"
         app:layout_constraintEnd_toEndOf="parent"
@@ -172,7 +152,7 @@
         android:layout_marginEnd="83dp"
         android:layout_marginBottom="5dp"
         android:text="Confirm Password"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -185,7 +165,7 @@
         android:layout_width="250dp"
         android:layout_height="60dp"
         android:layout_marginBottom="49dp"
-        android:backgroundTint="#249EE4"
+        android:backgroundTint="@color/blue"
         android:text="@string/register"
         android:textColor="@color/black"
         app:cornerRadius="10dp"

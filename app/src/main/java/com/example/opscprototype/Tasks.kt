@@ -3,29 +3,20 @@ package com.example.opscprototype
 import android.graphics.Bitmap
 import android.os.Build
 import androidx.annotation.RequiresApi
-import java.sql.Time
 import java.time.Duration
 import java.util.Calendar
 import java.util.Date
 
 class Tasks (
-    strTaskName: String, strCategory: String,
-    strDescription: String, dtStartDate: Date, dtEndDate: Date,
-    strStartTime: String, strEndTime: String, dblMinGoal: Double, dblMaxGoal: Double, imgPicture: Bitmap?
+    var strTaskName: String, var strCategory: String,
+    var strDescription: String, var dtStartDate: Date, var dtEndDate: Date,
+    var strStartTime: String, var strEndTime: String,
+    var dblMinGoal: Double, var dblMaxGoal: Double, var imgPicture: Bitmap?
 ){
-    var dblMaxGoal = dblMaxGoal
-    var strEndTime = strEndTime
-    var strStartTime = strStartTime
-    var dblMinGoal = dblMinGoal
-    var dtEndDate = dtEndDate
-    var dtStartDate = dtStartDate
-    var strDescription = strDescription
-    var strCategory = strCategory
-    var strTaskName = strTaskName
-    var imgPicture = imgPicture
+
     @RequiresApi(Build.VERSION_CODES.O)
-    var durTimeWorked = Duration.ZERO
-    var dateCreated = Calendar.getInstance().time
+    var durTimeWorked: Duration = Duration.ZERO
+    var dateCreated: Date = Calendar.getInstance().time
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateCategoryHoursWorked(categoriesList: List<categories>) {

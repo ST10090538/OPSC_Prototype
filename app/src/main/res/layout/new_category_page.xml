@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="#2D2D30">
 
     <TextView
         android:id="@+id/colo7"
@@ -14,7 +14,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="19dp"
         android:background="@drawable/rounded_button"
-        android:backgroundTint="#249EE4"
+        android:backgroundTint="@color/blue"
         android:fontFamily="sans-serif-medium"
         android:includeFontPadding="false"
         android:text="@string/new_category"
@@ -32,7 +32,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginBottom="100dp"
         android:background="@drawable/rounded_button"
-        android:backgroundTint="#249EE4"
+        android:backgroundTint="@color/blue"
         app:layout_constraintBottom_toTopOf="@+id/newtimesheet_timesheet_button2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,10 +79,10 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="100dp"
-                android:backgroundTint="@color/light_grey"
+                android:backgroundTint="#252526"
                 android:text="@string/submit"
                 android:textAlignment="center"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 app:cornerRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -101,6 +101,7 @@
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/todo"
         android:src="@drawable/timehseetblue"
+        android:tint="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/newcategory_profile_button"
         app:layout_constraintStart_toEndOf="@+id/newcategory_progress_button" />
@@ -113,6 +114,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         android:src="@drawable/progressblack"
+        android:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/newtimesheet_timesheet_button2"
         app:layout_constraintStart_toStartOf="parent" />
@@ -125,6 +127,7 @@
         android:layout_marginEnd="45dp"
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/todo"
+        android:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/newtimesheet_timesheet_button2"

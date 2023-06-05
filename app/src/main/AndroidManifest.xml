@@ -21,7 +21,8 @@
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,25 +31,35 @@
         </activity>
 
         <activity
-            android:name=".LoginPage" />
+            android:name=".LoginPage"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".RegisterPage" />
+            android:name=".RegisterPage"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".TimesheetPage" />
+            android:name=".TimesheetPage"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".ProgressPage" />
+            android:name=".ProgressPage"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".ProfilePage" />
+            android:name=".ProfilePage"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".NewTimesheetPage" />
+            android:name=".NewTimesheetPage"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".NewCategoryPage" />
+            android:name=".NewCategoryPage"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".TimesheetViewPage" />
+            android:name=".TimesheetViewPage"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".PersonalProgressPage" />
+            android:name=".PersonalProgressPage"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".NewTaskPage" />
+            android:name=".NewTaskPage"
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>
