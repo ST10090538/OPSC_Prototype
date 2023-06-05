@@ -31,7 +31,7 @@
         android:layout_marginTop="14dp"
         android:layout_marginEnd="19dp"
         android:background="@drawable/rounded_button"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="#249EE4"
         android:fontFamily="sans-serif-medium"
         android:includeFontPadding="false"
         android:text="New Task"
@@ -58,7 +58,7 @@
             android:layout_width="341dp"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="@color/blue"
+            android:backgroundTint="#249EE4"
             android:orientation="vertical">
 
             <TextView
@@ -203,8 +203,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="30dp">
+                android:layout_marginTop="30dp"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -280,7 +280,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
 
 
             <TextView

@@ -84,7 +84,7 @@
         android:layout_height="400dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/rounded_button"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="#249EE4"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -97,6 +97,7 @@
             android:stretchColumns="*">
 
             <TableRow>
+
                 <TextView
                     android:layout_column="1"
                     android:text="" />

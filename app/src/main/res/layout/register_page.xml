@@ -185,7 +185,7 @@
         android:layout_width="250dp"
         android:layout_height="60dp"
         android:layout_marginBottom="49dp"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="#249EE4"
         android:text="@string/register"
         android:textColor="@color/black"
         app:cornerRadius="10dp"

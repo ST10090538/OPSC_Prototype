@@ -92,7 +92,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/rounded_button"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="#249EE4"
         app:layout_constraintBottom_toTopOf="@+id/profile_timesheet_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
