@@ -1,11 +1,14 @@
 package com.example.opscprototype
-
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.Gravity
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TableLayout
@@ -16,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import java.text.SimpleDateFormat
 import java.time.Duration
 import java.util.Locale
+
 
 class TimesheetViewPage : AppCompatActivity() {
     private val taskStartTimeMap: MutableMap<Int, Long> = mutableMapOf()
@@ -77,6 +81,7 @@ class TimesheetViewPage : AppCompatActivity() {
 
             // Create and add the headings
             val taskNumberHeading = createHeadingTextView("Task Number")
+            val taskImageHeading = createHeadingTextView("Image")
             val taskNameHeading = createHeadingTextView("Task Name")
             val endDateHeading = createHeadingTextView("Deadline")
             val hoursWorkedHeading = createHeadingTextView("Hours worked")
@@ -84,6 +89,7 @@ class TimesheetViewPage : AppCompatActivity() {
 
             // Add the headings to the headingRow
             headingRow.addView(taskNumberHeading)
+            headingRow.addView(taskImageHeading)
             headingRow.addView(taskNameHeading)
             headingRow.addView(endDateHeading)
             headingRow.addView(hoursWorkedHeading)
@@ -100,6 +106,14 @@ class TimesheetViewPage : AppCompatActivity() {
                 val tableRow = TableRow(this)
 
                 // Create and add the views for task information
+                val taskImage = ImageView(this)
+                val maxWidth = 10
+                val maxHeight = 10
+                val resizedBitmap = task.imgPicture?.let { resizeBitmap(it, 80, 80) }
+                taskImage.setImageBitmap(resizedBitmap)
+                taskImage.setOnClickListener {
+                    showEnlargedImage(task.imgPicture)
+                }
                 val taskNumberTextView = createTextView("${i + 1}")
                 val taskNameTextView = createTextView(task.strTaskName)
                 val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -113,8 +127,11 @@ class TimesheetViewPage : AppCompatActivity() {
                 val formattedDuration = String.format("%02d:%02d:%02d", hours, minutes, seconds)
                 val hoursWorkedTextView = createTextView(formattedDuration)
 
+
+
                 // Add the task information views to the tableRow
                 tableRow.addView(taskNumberTextView)
+                tableRow.addView(taskImage)
                 tableRow.addView(taskNameTextView)
                 tableRow.addView(endDateTextView)
                 tableRow.addView(hoursWorkedTextView)
@@ -199,6 +216,33 @@ class TimesheetViewPage : AppCompatActivity() {
                 tableLayout.addView(tableRow)
             }
         }
+    }
+
+    private fun showEnlargedImage(image: Bitmap?) {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_enlarged_image)
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        val enlargedImageView = dialog.findViewById<ImageView>(R.id.enlargedImageView)
+        enlargedImageView.setImageBitmap(image)
+
+        dialog.show()
+    }
+
+    private fun resizeBitmap(bitmap: Bitmap, maxWidth: Int, maxHeight: Int): Bitmap {
+        val width = bitmap.width
+        val height = bitmap.height
+
+        val scaleWidth = maxWidth.toFloat() / width
+        val scaleHeight = maxHeight.toFloat() / height
+
+        val matrix = Matrix()
+        matrix.postScale(scaleWidth, scaleHeight)
+
+        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false)
     }
 
     private fun createHeadingTextView(text: String): TextView {

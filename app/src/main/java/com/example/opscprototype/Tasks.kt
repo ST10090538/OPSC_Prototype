@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import java.sql.Time
 import java.time.Duration
+import java.util.Calendar
 import java.util.Date
 
 class Tasks (
@@ -24,6 +25,7 @@ class Tasks (
     var imgPicture = imgPicture
     @RequiresApi(Build.VERSION_CODES.O)
     var durTimeWorked = Duration.ZERO
+    var dateCreated = Calendar.getInstance().time
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateCategoryHoursWorked(categoriesList: List<categories>) {
