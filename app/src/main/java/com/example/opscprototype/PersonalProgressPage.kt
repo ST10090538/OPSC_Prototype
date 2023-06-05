@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +35,7 @@ class PersonalProgressPage : AppCompatActivity(), OnChartValueSelectedListener {
         val progressIcon = findViewById<ImageView>(R.id.personalprogress_progress_icon)
         val profileIcon = findViewById<ImageView>(R.id.personalprogress_profile_icon)
         val timesheetIcon = findViewById<ImageView>(R.id.personalprogress_timesheet_icon)
+        BackButton_PersonalProgressPage()
 
         SharedData.lstCategories
         val entries = mutableListOf<PieEntry>()
@@ -183,5 +185,11 @@ class PersonalProgressPage : AppCompatActivity(), OnChartValueSelectedListener {
         pieChart.invalidate()
     }
 
+    private fun BackButton_PersonalProgressPage() {
 
+        val click = findViewById<View>(R.id.BackButton_PersonalProgressPage)
+        click.setOnClickListener {
+            startActivity(Intent(this, ProgressPage::class.java))
+        }
+    }
 }

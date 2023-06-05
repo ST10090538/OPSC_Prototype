@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -26,6 +27,7 @@ import java.util.Date
 
 @Suppress("DEPRECATION")
 class NewTaskPage: AppCompatActivity() {
+
     companion object {
         const val PICK_IMAGE_REQUEST = 1
         const val REQUEST_IMAGE_CAPTURE = 2
@@ -55,6 +57,7 @@ class NewTaskPage: AppCompatActivity() {
         var startTime = ""
         var endTime = ""
         val categoryList = SharedData.lstCategories
+        BackButton_newtask()
 
         if(categoryList.count() < 2) {
             SharedData.lstCategories += categories("Web design")
@@ -245,6 +248,14 @@ class NewTaskPage: AppCompatActivity() {
     private fun choosePhotoFromGallery() {
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST)
+    }
+
+    private fun BackButton_newtask() {
+
+        val click = findViewById<View>(R.id.BackButton_Newtask)
+        click.setOnClickListener {
+            startActivity(Intent(this, TimesheetViewPage::class.java))
+        }
     }
 
     private fun takePhotoFromCamera() {
