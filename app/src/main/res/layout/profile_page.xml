@@ -71,7 +71,7 @@
         android:layout_marginBottom="44dp"
         android:background="#00FFFFFF"
         android:src="@drawable/profileblack"
-        android:tint="#00FFFFFF"
+        android:tint="#00000000"
         app:layout_constraintBottom_toTopOf="@+id/profilepage_username_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
