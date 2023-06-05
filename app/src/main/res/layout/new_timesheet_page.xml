@@ -133,6 +133,7 @@
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 app:cornerRadius="10dp"
+                app:rippleColor="@color/blue"
                 tools:ignore="SmallSp" />
         </LinearLayout>
 

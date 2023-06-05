@@ -80,6 +80,7 @@
         app:cornerRadius="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/colo3"
+        app:rippleColor="#2196F3"
         tools:ignore="SmallSp" />
 
     <Button
@@ -96,6 +97,7 @@
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/colo3"
+        app:rippleColor="#2196F3"
         tools:ignore="SmallSp" />
 
     <ScrollView
@@ -145,7 +147,8 @@
                 android:text="Tasks: 6"
                 android:textColor="@color/black"
                 android:textSize="18dp"
-                app:cornerRadius="10dp" />
+                app:cornerRadius="10dp"
+                app:rippleColor="#2196F3" />
         </LinearLayout>
     </ScrollView>
 

@@ -119,6 +119,7 @@
                 android:textColor="@color/white"
                 android:textSize="15dp"
                 app:cornerRadius="10dp"
+                app:rippleColor="#2196F3"
                 tools:ignore="TextSizeCheck" />
 
             <TextView
@@ -146,6 +147,7 @@
                     android:textColor="#FFFFFF"
                     android:textSize="10sp"
                     app:cornerRadius="10dp"
+                    app:rippleColor="#2196F3"
                     tools:ignore="SmallSp" />
 
                 <Button
@@ -160,6 +162,7 @@
                     android:textSize="10sp"
                     app:cornerRadius="10dp"
                     app:iconTint="#2D2D30"
+                    app:rippleColor="#2196F3"
                     tools:ignore="SmallSp" />
             </LinearLayout>
 
@@ -179,6 +182,7 @@
                     android:textColor="#FFFFFF"
                     android:textSize="10sp"
                     app:cornerRadius="10dp"
+                    app:rippleColor="#2196F3"
                     tools:ignore="SmallSp" />
 
                 <Button
@@ -192,6 +196,7 @@
                     android:textColor="#FFFFFF"
                     android:textSize="10sp"
                     app:cornerRadius="10dp"
+                    app:rippleColor="#2196F3"
                     tools:ignore="SmallSp" />
             </LinearLayout>
 
@@ -339,6 +344,7 @@
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 app:cornerRadius="10dp"
+                app:rippleColor="#2196F3"
                 tools:ignore="SmallSp" />
 
 

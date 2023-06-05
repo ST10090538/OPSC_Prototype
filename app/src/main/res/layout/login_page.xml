@@ -98,7 +98,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
+        app:rippleColor="#2196F3" />
 
     <Button
         android:id="@+id/registerpage_register_button"
@@ -112,7 +113,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginpage_login_button" />
+        app:layout_constraintTop_toBottomOf="@+id/loginpage_login_button"
+        app:rippleColor="#2196F3" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
