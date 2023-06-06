@@ -1,10 +1,12 @@
 package com.example.opscprototype
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -20,10 +22,15 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import java.time.Duration
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.Legend
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 
 class PersonalProgressPage : AppCompatActivity(), OnChartValueSelectedListener {
     private lateinit var pieChart: PieChart
     private var displayTasks = false
+    private var filterStart: Date? = null
+    private var filterEnd: Date? = null
 
     @RequiresApi(Build.VERSION_CODES.S)
     @SuppressLint("MissingInflatedId")
@@ -79,6 +86,91 @@ class PersonalProgressPage : AppCompatActivity(), OnChartValueSelectedListener {
             startActivity(Intent(this, TimesheetPage::class.java))
         }
 
+        findViewById<Button>(R.id.btnStartDate).setOnClickListener(){
+            val currentDate = Calendar.getInstance()
+            val year = currentDate.get(Calendar.YEAR)
+            val month = currentDate.get(Calendar.MONTH)
+            val day = currentDate.get(Calendar.DAY_OF_MONTH)
+
+            val datePickerDialog = DatePickerDialog(
+                this,
+                DatePickerDialog.OnDateSetListener { _, selectedYear, selectedMonth, selectedDay ->
+                    val calendar = Calendar.getInstance()
+                    calendar.set(selectedYear, selectedMonth, selectedDay, 0, 0, 0) // Set time to 23:59:59
+                    filterStart = calendar.time
+
+                    val formattedDate = SimpleDateFormat("yyyy/MM/dd").format(filterStart)
+                    val btnEndDate = findViewById<Button>(R.id.btnStartDate)
+                    btnEndDate.text = formattedDate
+                },
+                year,
+                month,
+                day
+            )
+            datePickerDialog.show()
+        }
+
+        findViewById<Button>(R.id.btnEndDate).setOnClickListener() {
+            val currentDate = Calendar.getInstance()
+            val year = currentDate.get(Calendar.YEAR)
+            val month = currentDate.get(Calendar.MONTH)
+            val day = currentDate.get(Calendar.DAY_OF_MONTH)
+
+            val datePickerDialog = DatePickerDialog(
+                this,
+                DatePickerDialog.OnDateSetListener { _, selectedYear, selectedMonth, selectedDay ->
+                    val calendar = Calendar.getInstance()
+                    calendar.set(selectedYear, selectedMonth, selectedDay, 23, 59, 59) // Set time to 23:59:59
+                    filterEnd = calendar.time
+
+                    val formattedDate = SimpleDateFormat("yyyy/MM/dd").format(filterEnd)
+                    val btnEndDate = findViewById<Button>(R.id.btnEndDate)
+                    btnEndDate.text = formattedDate
+                },
+                year,
+                month,
+                day
+            )
+            datePickerDialog.show()
+        }
+
+        findViewById<Button>(R.id.btnApplyFilter).setOnClickListener(){
+            val filteredEntries = mutableListOf<PieEntry>()
+            var totalFilteredHoursWorked = Duration.ZERO
+            val start = filterStart
+            val end = filterEnd
+            for (cat in SharedData.lstCategories) {
+                var filterCatHoursWorked = Duration.ZERO
+                val strCatName = cat.strName
+                for (log in cat.lstWorkLog) {
+                    if ((log.dateWorked.after(filterStart) || log.dateWorked == filterStart) &&
+                        (log.dateWorked.before(filterEnd) || log.dateWorked == filterEnd)) {
+                        filterCatHoursWorked += log.amountOfTimeWorked
+                    }
+                }
+                if (filterCatHoursWorked > Duration.ZERO) {
+                    totalFilteredHoursWorked += filterCatHoursWorked
+                    val hoursWorked = filterCatHoursWorked.toSeconds().toFloat()
+                    val percentage = (hoursWorked / totalHoursWorked.toSeconds().toFloat()) * 100
+                    filteredEntries.add(PieEntry(percentage, strCatName))
+                }
+            }
+
+            val dataSet = PieDataSet(filteredEntries, "")
+            dataSet.sliceSpace = 3f
+            dataSet.selectionShift = 5f
+            dataSet.colors = getColors(filteredEntries.size)
+
+            val data = PieData(dataSet)
+            data.setValueFormatter(PercentFormatter(pieChart))
+            data.setValueTextSize(11f)
+            data.setValueTextColor(Color.BLACK)
+
+            pieChart.data = data
+            pieChart.highlightValues(null)
+            pieChart.invalidate()
+        }
+
 // Get the chart's description object
         val description = Description()
         description.text = ""
@@ -104,15 +196,26 @@ class PersonalProgressPage : AppCompatActivity(), OnChartValueSelectedListener {
         return colors
     }
 
+
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onValueSelected(e: Entry?, h: Highlight?) {
-        if (!displayTasks) {
-            if (e != null && e is PieEntry) {
-                val selectedCategory = e.label
-                val tasksInCategory = getTasksInCategory(selectedCategory)
+        if (e != null && e is PieEntry) {
+            val selectedCategory = e.label
+            val tasksInCategory = getTasksInCategory(selectedCategory)
+
+            if (filterStart != null && filterEnd != null) {
+                val filteredTasks = tasksInCategory.filter { task ->
+                    task.lstWorkLog.any { log ->
+                        ((log.dateWorked.after(filterStart) || log.dateWorked == filterStart) &&
+                                (log.dateWorked.before(filterEnd) || log.dateWorked == filterEnd))
+                    }
+                }
+                updatePieChart(filteredTasks)
+            } else {
                 updatePieChart(tasksInCategory)
-                displayTasks = true
             }
+
+            displayTasks = true
         }
     }
 
@@ -126,6 +229,11 @@ class PersonalProgressPage : AppCompatActivity(), OnChartValueSelectedListener {
             for (cat in SharedData.lstCategories) {
                 totalHoursWorked += cat.hoursWorked
             }
+
+            filterStart = null
+            filterEnd = null
+            findViewById<Button>(R.id.btnStartDate).text = "Start Date"
+            findViewById<Button>(R.id.btnEndDate).text = "End Date"
 
             for (cats in SharedData.lstCategories) {
                 val hoursWorked = cats.hoursWorked.toSeconds().toFloat()

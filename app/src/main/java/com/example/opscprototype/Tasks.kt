@@ -17,6 +17,7 @@ class Tasks (
     @RequiresApi(Build.VERSION_CODES.O)
     var durTimeWorked: Duration = Duration.ZERO
     var dateCreated: Date = Calendar.getInstance().time
+    var lstWorkLog = emptyList<workLog>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateCategoryHoursWorked(categoriesList: List<categories>) {
