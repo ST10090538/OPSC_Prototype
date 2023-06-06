@@ -43,11 +43,8 @@ class NewTimesheetPage : AppCompatActivity() {
 
     }
     private fun saveTimesheetName(timesheetName: String) {
-        val sharedPreferences = getSharedPreferences("Timesheets", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        val timesheetCount = sharedPreferences.getInt("TimesheetCount", 0) + 1
-        editor.putString("Timesheet$timesheetCount", timesheetName)
-        editor.putInt("TimesheetCount", timesheetCount)
-        editor.apply()
+        if(!timesheetName.equals("")){
+            SharedData.lstTimesheets += timesheetName
+        }
     }
 }

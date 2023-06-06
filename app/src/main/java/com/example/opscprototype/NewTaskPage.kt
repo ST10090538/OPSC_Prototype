@@ -205,7 +205,7 @@ class NewTaskPage: AppCompatActivity() {
             val description = findViewById<EditText>(R.id.txtNewTaskDesc).text.toString()
             val category = categorySpinner.selectedItem.toString()
             val newTask = Tasks(newTaskName, category, description, startDate, endDate,startTime, endTime,
-                minHours, maxHours, imgPicture)
+                minHours, maxHours, imgPicture, SharedData.selectedTimeSheet)
             SharedData.lstTasks += newTask
             startActivity(Intent(this, TimesheetViewPage::class.java))
         }

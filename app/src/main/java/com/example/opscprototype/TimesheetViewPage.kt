@@ -60,7 +60,13 @@ class TimesheetViewPage : AppCompatActivity() {
         val tableLayout = findViewById<TableLayout>(R.id.tableLayout)
 
         // Get the list of tasks from SharedData
-        val tasks = SharedData.lstTasks
+        var tasks = emptyList<Tasks>()
+        for(task in SharedData.lstTasks){
+            if(task.timeSheet.equals(SharedData.selectedTimeSheet)){
+                tasks += task
+            }
+        }
+
 
         // Check if the tasks list is empty
         if (tasks.isEmpty()) {

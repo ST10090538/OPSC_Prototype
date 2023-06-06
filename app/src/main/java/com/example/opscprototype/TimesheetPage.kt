@@ -8,6 +8,7 @@ import android.util.TypedValue
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Space
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -29,8 +30,13 @@ class TimesheetPage : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("Timesheets", Context.MODE_PRIVATE)
         val timesheetCount = sharedPreferences.getInt("TimesheetCount", 0)
 
-        for (i in 1..timesheetCount) {
-            val timesheetName = sharedPreferences.getString("Timesheet$i", "")
+        if(SharedData.lstTimesheets.isEmpty()){
+            SharedData.lstTimesheets += "Amazon"
+            SharedData.lstTimesheets += "Google"
+        }
+
+        for (timeSheet in SharedData.lstTimesheets) {
+            val timesheetName = timeSheet
             if (timesheetName != null && timesheetName.isNotEmpty()) {
                 val button = Button(this)
                 button.text = timesheetName
@@ -54,42 +60,11 @@ class TimesheetPage : AppCompatActivity() {
                 // Add the button to the layout
                 layout.addView(button)
 
-                // Set click listener for the button
-                button.setOnClickListener {
-                    val intent = Intent(this, TimesheetViewPage::class.java)
-                    intent.putExtra("timesheetName", timesheetName)
-                    startActivity(intent)
-                }
+                // Add space after the button
+                val space = Space(this)
+                space.layoutParams = LinearLayout.LayoutParams(5, 50)
+                layout.addView(space)
 
-                // Create a new button for tasks
-                val taskButton = Button(this)
-                taskButton.text = "New Task"
-
-                // Set task button attributes
-                taskButton.layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-                taskButton.setPadding(
-                    resources.getDimensionPixelSize(R.dimen.button_padding_start),
-                    0,
-                    resources.getDimensionPixelSize(R.dimen.button_padding_end),
-                    0
-                )
-                taskButton.backgroundTintList = ContextCompat.getColorStateList(this, R.color.blue)
-                taskButton.setTextColor(ContextCompat.getColor(this, R.color.black))
-                taskButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18.toFloat())
-                taskButton.setBackgroundResource(R.drawable.rounded_button)
-
-                // Add the task button to the layout
-                layout.addView(taskButton)
-
-                // Set click listener for the task button
-                taskButton.setOnClickListener {
-                    val intent = Intent(this, TimesheetViewPage::class.java)
-                    intent.putExtra("timesheetName", timesheetName)
-                    startActivity(intent)
-                }
             }
         }
 
@@ -122,7 +97,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "09:00 AM", "11:00 AM",
                 2.5, 5.0,
-                null
+                null, "Amazon"
             ).apply {
                 var workLog = workLog()
                 workLog.amountOfTimeWorked = Duration.ofHours(2)
@@ -141,7 +116,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "01:00 PM", "03:00 PM",
                 1.5, 3.0,
-                null
+                null, "Amazon"
             ).apply {
                 var workLog = workLog()
                 workLog.amountOfTimeWorked = Duration.ofHours(2)
@@ -160,7 +135,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "10:00 AM", "12:00 PM",
                 2.0, 4.0,
-                null
+                null, "Amazon"
             ).apply {
                 var workLog = workLog()
                 workLog.amountOfTimeWorked = Duration.ofHours(2)
@@ -181,7 +156,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "09:00 AM", "11:00 AM",
                 2.5, 5.0,
-                null
+                null, "Amazon"
             ).apply {
                 durTimeWorked = Duration.ofHours(3)
             },
@@ -192,7 +167,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "01:00 PM", "03:00 PM",
                 1.5, 3.0,
-                null
+                null, "Amazon"
             ).apply {
                 durTimeWorked = Duration.ofHours(1)
             },
@@ -203,7 +178,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "10:00 AM", "12:00 PM",
                 2.0, 4.0,
-                null
+                null, "Amazon"
             ).apply {
                 durTimeWorked = Duration.ofHours(2)
             },
@@ -216,7 +191,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "09:00 AM", "11:00 AM",
                 2.5, 5.0,
-                null
+                null, "Google"
             ).apply {
                 durTimeWorked = Duration.ofHours(3)
             },
@@ -227,7 +202,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "01:00 PM", "03:00 PM",
                 1.5, 3.0,
-                null
+                null, "Google"
             ).apply {
                 durTimeWorked = Duration.ofHours(2)
             },
@@ -238,7 +213,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "10:00 AM", "12:00 PM",
                 2.0, 4.0,
-                null
+                null, "Google"
             ).apply {
                 durTimeWorked = Duration.ofHours(5)
             },
@@ -251,7 +226,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "09:00 AM", "11:00 AM",
                 2.5, 5.0,
-                null
+                null, "Google"
             ).apply {
                 durTimeWorked = Duration.ofHours(1)
             },
@@ -262,7 +237,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "01:00 PM", "03:00 PM",
                 1.5, 3.0,
-                null
+                null, "Google"
             ).apply {
                 durTimeWorked = Duration.ofHours(1)
             },
@@ -273,7 +248,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "10:00 AM", "12:00 PM",
                 2.0, 4.0,
-                null
+                null, "Google"
             ).apply {
                 durTimeWorked = Duration.ofHours(2)
             }

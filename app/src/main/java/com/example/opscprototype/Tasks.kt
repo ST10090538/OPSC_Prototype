@@ -11,7 +11,7 @@ class Tasks (
     var strTaskName: String, var strCategory: String,
     var strDescription: String, var dtStartDate: Date, var dtEndDate: Date,
     var strStartTime: String, var strEndTime: String,
-    var dblMinGoal: Double, var dblMaxGoal: Double, var imgPicture: Bitmap?
+    var dblMinGoal: Double, var dblMaxGoal: Double, var imgPicture: Bitmap?, var timeSheet: String
 ){
 
     @RequiresApi(Build.VERSION_CODES.O)
