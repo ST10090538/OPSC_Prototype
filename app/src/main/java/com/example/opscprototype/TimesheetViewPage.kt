@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
@@ -35,6 +36,7 @@ class TimesheetViewPage : AppCompatActivity() {
         val profileIcon = findViewById<ImageView>(R.id.timesheetview_profile_button)
         val timesheetIcon = findViewById<ImageView>(R.id.timesheetview_timesheet_button)
         val newTask = findViewById<ImageView>(R.id.timesheetview_newtask_button)
+        BackButton_TimesheetViewPage()
 
         progressIcon.setOnClickListener {
             startActivity(Intent(this, ProgressPage::class.java))
@@ -259,5 +261,13 @@ class TimesheetViewPage : AppCompatActivity() {
         textView.text = text
         textView.setPadding(16, 16, 16, 16)
         return textView
+    }
+
+    private fun BackButton_TimesheetViewPage() {
+
+        val click = findViewById<View>(R.id.BackButton_TimesheetViewPage)
+        click.setOnClickListener {
+            startActivity(Intent(this, TimesheetPage::class.java))
+        }
     }
 }
