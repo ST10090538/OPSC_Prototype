@@ -27,8 +27,6 @@ class TimesheetPage : AppCompatActivity() {
         val newTimesheet = findViewById<ImageView>(R.id.timesheet_new_timesheet)
         val layout = findViewById<LinearLayout>(R.id.timesheet_button_layout)
         preloadData()
-        val sharedPreferences = getSharedPreferences("Timesheets", Context.MODE_PRIVATE)
-        val timesheetCount = sharedPreferences.getInt("TimesheetCount", 0)
 
         if(SharedData.lstTimesheets.isEmpty()){
             SharedData.lstTimesheets += "Amazon"
@@ -59,6 +57,11 @@ class TimesheetPage : AppCompatActivity() {
 
                 // Add the button to the layout
                 layout.addView(button)
+
+                button.setOnClickListener(){
+                    SharedData.selectedTimeSheet = button.text.toString()
+                    startActivity(Intent(this, TimesheetViewPage::class.java))
+                }
 
                 // Add space after the button
                 val space = Space(this)
