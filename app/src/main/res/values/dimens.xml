@@ -2,4 +2,8 @@
 <resources>
     <dimen name="button_width">100dp</dimen>
     <dimen name="button_height">30dp</dimen>
+    <dimen name="new_button_width">295dp</dimen>
+    <dimen name="new_button_height">69dp</dimen>
+    <dimen name="button_padding_start">8dp</dimen>
+    <dimen name="button_padding_end">8dp</dimen>
 </resources>
