@@ -71,6 +71,7 @@ class NewTaskPage: AppCompatActivity() {
 
         categorySpinner = findViewById(R.id.categorySpinner)
         cats = emptyList()
+
         for(i in SharedData.lstCategories){
             cats = cats + i.strName
         }

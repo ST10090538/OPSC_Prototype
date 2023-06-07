@@ -14,7 +14,7 @@
         android:background="#00000000"
         android:fontFamily="sans-serif-medium"
         android:includeFontPadding="false"
-        android:text="Timesheet1"
+        android:text="Timesheet"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="40sp"

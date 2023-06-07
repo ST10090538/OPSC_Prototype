@@ -91,101 +91,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Profilepage_uploadimage" />
 
-    <ScrollView
-        android:layout_width="345dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="32dp"
+    <TextView
+        android:id="@+id/colo7"
+        android:layout_width="322dp"
+        android:layout_height="38dp"
+        android:layout_gravity="center_horizontal"
         android:background="@drawable/rounded_button"
         android:backgroundTint="@color/blue"
-        app:layout_constraintBottom_toTopOf="@+id/profile_timesheet_button"
+        android:fontFamily="sans-serif-medium"
+        android:includeFontPadding="false"
+        android:text="Achievements"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.438"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilepage_username_tv">
+        tools:layout_editor_absoluteY="296dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/colo7"
-                android:layout_width="322dp"
-                android:layout_height="38dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/rounded_button"
-                android:backgroundTint="#252526"
-                android:fontFamily="sans-serif-medium"
-                android:includeFontPadding="false"
-                android:text="Achievements"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="30sp"
-                app:cornerRadius="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:orientation="horizontal">
-
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="15dp"
-                    android:src="@drawable/pie1" />
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="15dp"
-                    android:src="@drawable/pie2" />
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="15dp"
-                    android:src="@drawable/pie3" />
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="15dp"
-                    android:src="@drawable/pie4" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/colo8"
-                android:layout_width="322dp"
-                android:layout_height="38dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/rounded_button"
-                android:backgroundTint="#252526"
-                android:fontFamily="sans-serif-medium"
-                android:includeFontPadding="false"
-                android:text="Preferences"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="30sp"
-                app:cornerRadius="10dp" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal" />
-        </LinearLayout>
-    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
