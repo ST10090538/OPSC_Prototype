@@ -159,16 +159,16 @@ class TimesheetViewPage : AppCompatActivity() {
             val headingRow = TableRow(this)
 
             // Create and add the headings
-            val taskNumberHeading = createHeadingTextView("Task Number")
             val taskImageHeading = createHeadingTextView("Image")
+            val taskNumberHeading = createHeadingTextView("Task Number")
             val taskNameHeading = createHeadingTextView("Task Name")
             val endDateHeading = createHeadingTextView("Deadline")
             val hoursWorkedHeading = createHeadingTextView("Hours worked")
             val stopwatchHeading = createHeadingTextView("Stopwatch")
 
             // Add the headings to the headingRow
-            headingRow.addView(taskNumberHeading)
             headingRow.addView(taskImageHeading)
+            headingRow.addView(taskNumberHeading)
             headingRow.addView(taskNameHeading)
             headingRow.addView(endDateHeading)
             headingRow.addView(hoursWorkedHeading)
@@ -212,8 +212,8 @@ class TimesheetViewPage : AppCompatActivity() {
 
 
             // Add the task information views to the tableRow
-            tableRow.addView(taskNumberTextView)
             tableRow.addView(taskImage)
+            tableRow.addView(taskNumberTextView)
             tableRow.addView(taskNameTextView)
             tableRow.addView(endDateTextView)
             tableRow.addView(hoursWorkedTextView)
