@@ -23,7 +23,7 @@ class LoginPage : AppCompatActivity() {
 
      editText2 = findViewById(R.id.editText2)
         editTextTextPassword = findViewById(R.id.editTextTextPassword)
-        loginpage_login_button = findViewById(R.id.loginpage_login_button)
+        findViewById<Button>(R.id.loginpage_login_button)
         registerpage_register_button = findViewById(R.id.registerpage_register_button)
 
         registerpage_register_button.setOnClickListener {
@@ -36,7 +36,7 @@ class LoginPage : AppCompatActivity() {
             registeredPassword = extras.getString("password")
         }
 
-        loginpage_login_button.setOnClickListener {
+        findViewById<Button>(R.id.loginpage_login_button).setOnClickListener(){
             val username = editText2.text.toString().trim()
             val password = editTextTextPassword.text.toString().trim()
 
