@@ -24,7 +24,7 @@
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/todo"
         android:src="@drawable/timehseetblue"
-        android:tint="@color/blue"
+        app:tint="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/timesheetview_profile_button"
         app:layout_constraintStart_toEndOf="@+id/timesheetview_progress_button" />
@@ -37,7 +37,7 @@
         android:layout_marginEnd="45dp"
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/todo"
-        android:tint="#FFFFFF"
+        app:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/timesheetview_timesheet_button"
@@ -51,7 +51,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         android:src="@drawable/progressblack"
-        android:tint="#FFFFFF"
+        app:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/timesheetview_timesheet_button"
         app:layout_constraintStart_toStartOf="parent" />
@@ -74,35 +74,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/colo9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="138dp"
-        android:layout_marginTop="104dp"
-        android:layout_marginEnd="138dp"
-        android:fontFamily="sans-serif-medium"
-        android:includeFontPadding="false"
-        android:text="Timesheet1"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <HorizontalScrollView
         android:id="@+id/scrollView3"
         android:layout_width="355dp"
         android:layout_height="400dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="164dp"
         android:background="@drawable/rounded_button"
         android:backgroundTint="@color/blue"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/colo9">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TableLayout
             android:id="@+id/tableLayout"
@@ -140,7 +123,6 @@
         </TableLayout>
     </HorizontalScrollView>
 
-
     <ImageView
         android:id="@+id/timesheetview_newtask_button"
         android:layout_width="60dp"
@@ -164,4 +146,62 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/timesheetview_newtask_button"
         app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
+
+    <Button
+        android:id="@+id/btnStartDate"
+        android:layout_width="101dp"
+        android:layout_height="48dp"
+        android:backgroundTint="@color/blue"
+        android:text="Start Date"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="10sp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.112"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.121"
+        app:rippleColor="#2196F3"
+        tools:ignore="SmallSp" />
+
+    <Button
+        android:id="@+id/btnEndDate"
+        android:layout_width="101dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="@color/blue"
+        android:text="End Date"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="10sp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.557"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.121"
+        app:rippleColor="#2196F3"
+        tools:ignore="SmallSp" />
+
+    <Button
+        android:id="@+id/btnApplyFilter"
+        android:layout_width="101dp"
+        android:layout_height="48dp"
+        android:backgroundTint="@color/blue"
+        android:text="Apply"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="10sp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.948"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.121"
+        app:rippleColor="#2196F3"
+        tools:ignore="SmallSp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

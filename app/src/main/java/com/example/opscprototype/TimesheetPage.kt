@@ -109,6 +109,7 @@ class TimesheetPage : AppCompatActivity() {
                 calendar.set(Calendar.DAY_OF_MONTH, 1)
                 date = calendar.time
                 workLog.dateWorked = date
+                dateCreated = date
                 durTimeWorked = Duration.ofHours(3)
                 lstWorkLog += workLog
             },
@@ -128,6 +129,7 @@ class TimesheetPage : AppCompatActivity() {
                 calendar.set(Calendar.DAY_OF_MONTH, 2)
                 date = calendar.time
                 workLog.dateWorked = date
+                dateCreated = date
                 durTimeWorked = Duration.ofHours(2)
                 lstWorkLog += workLog
             },
@@ -147,6 +149,7 @@ class TimesheetPage : AppCompatActivity() {
                 calendar.set(Calendar.DAY_OF_MONTH, 2)
                 date = calendar.time
                 workLog.dateWorked = date
+                dateCreated = date
                 durTimeWorked = Duration.ofHours(4)
                 lstWorkLog += workLog
             },
