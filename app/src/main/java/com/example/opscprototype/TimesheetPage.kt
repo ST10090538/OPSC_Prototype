@@ -164,6 +164,11 @@ class TimesheetPage : AppCompatActivity() {
                 2.5, 5.0,
                 null, "Amazon"
             ).apply {
+                calendar.set(Calendar.YEAR, 2023)
+                calendar.set(Calendar.MONTH, Calendar.JUNE)
+                calendar.set(Calendar.DAY_OF_MONTH, 3)
+                date = calendar.time
+                dateCreated = date
                 durTimeWorked = Duration.ofHours(3)
             },
             Tasks(
@@ -175,6 +180,11 @@ class TimesheetPage : AppCompatActivity() {
                 1.5, 3.0,
                 null, "Amazon"
             ).apply {
+                calendar.set(Calendar.YEAR, 2023)
+                calendar.set(Calendar.MONTH, Calendar.JUNE)
+                calendar.set(Calendar.DAY_OF_MONTH, 3)
+                date = calendar.time
+                dateCreated = date
                 durTimeWorked = Duration.ofHours(1)
             },
             Tasks(
@@ -186,6 +196,11 @@ class TimesheetPage : AppCompatActivity() {
                 2.0, 4.0,
                 null, "Amazon"
             ).apply {
+                calendar.set(Calendar.YEAR, 2023)
+                calendar.set(Calendar.MONTH, Calendar.JUNE)
+                calendar.set(Calendar.DAY_OF_MONTH, 4)
+                date = calendar.time
+                dateCreated = date
                 durTimeWorked = Duration.ofHours(2)
             },
 
@@ -199,6 +214,11 @@ class TimesheetPage : AppCompatActivity() {
                 2.5, 5.0,
                 null, "Google"
             ).apply {
+                calendar.set(Calendar.YEAR, 2023)
+                calendar.set(Calendar.MONTH, Calendar.JUNE)
+                calendar.set(Calendar.DAY_OF_MONTH, 4)
+                date = calendar.time
+                dateCreated = date
                 durTimeWorked = Duration.ofHours(3)
             },
             Tasks(
@@ -210,6 +230,11 @@ class TimesheetPage : AppCompatActivity() {
                 1.5, 3.0,
                 null, "Google"
             ).apply {
+                calendar.set(Calendar.YEAR, 2023)
+                calendar.set(Calendar.MONTH, Calendar.JUNE)
+                calendar.set(Calendar.DAY_OF_MONTH, 4)
+                date = calendar.time
+                dateCreated = date
                 durTimeWorked = Duration.ofHours(2)
             },
             Tasks(
@@ -221,6 +246,11 @@ class TimesheetPage : AppCompatActivity() {
                 2.0, 4.0,
                 null, "Google"
             ).apply {
+                calendar.set(Calendar.YEAR, 2023)
+                calendar.set(Calendar.MONTH, Calendar.JUNE)
+                calendar.set(Calendar.DAY_OF_MONTH, 5)
+                date = calendar.time
+                dateCreated = date
                 durTimeWorked = Duration.ofHours(5)
             },
 
@@ -234,6 +264,11 @@ class TimesheetPage : AppCompatActivity() {
                 2.5, 5.0,
                 null, "Google"
             ).apply {
+                calendar.set(Calendar.YEAR, 2023)
+                calendar.set(Calendar.MONTH, Calendar.JUNE)
+                calendar.set(Calendar.DAY_OF_MONTH, 5)
+                date = calendar.time
+                dateCreated = date
                 durTimeWorked = Duration.ofHours(1)
             },
             Tasks(
@@ -245,6 +280,11 @@ class TimesheetPage : AppCompatActivity() {
                 1.5, 3.0,
                 null, "Google"
             ).apply {
+                calendar.set(Calendar.YEAR, 2023)
+                calendar.set(Calendar.MONTH, Calendar.JUNE)
+                calendar.set(Calendar.DAY_OF_MONTH, 5)
+                date = calendar.time
+                dateCreated = date
                 durTimeWorked = Duration.ofHours(1)
             },
             Tasks(
@@ -256,6 +296,11 @@ class TimesheetPage : AppCompatActivity() {
                 2.0, 4.0,
                 null, "Google"
             ).apply {
+                calendar.set(Calendar.YEAR, 2023)
+                calendar.set(Calendar.MONTH, Calendar.JUNE)
+                calendar.set(Calendar.DAY_OF_MONTH, 6)
+                date = calendar.time
+                dateCreated = date
                 durTimeWorked = Duration.ofHours(2)
             }
         )

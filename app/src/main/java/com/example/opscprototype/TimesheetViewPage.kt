@@ -38,11 +38,11 @@ class TimesheetViewPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.timesheet_view_page)
 
+        val tableLayout = findViewById<TableLayout>(R.id.tableLayout)
         val progressIcon = findViewById<ImageView>(R.id.timesheetview_progress_button)
         val profileIcon = findViewById<ImageView>(R.id.timesheetview_profile_button)
         val timesheetIcon = findViewById<ImageView>(R.id.timesheetview_timesheet_button)
         val newTask = findViewById<ImageView>(R.id.timesheetview_newtask_button)
-        val tableLayout = findViewById<TableLayout>(R.id.tableLayout)
         findViewById<TextView>(R.id.colo6).text = SharedData.selectedTimeSheet
         BackButton_TimesheetViewPage()
 
@@ -115,8 +115,8 @@ class TimesheetViewPage : AppCompatActivity() {
         findViewById<Button>(R.id.btnApplyFilter).setOnClickListener(){
             var tasks = emptyList<Tasks>()
             for(task in SharedData.lstTasks){
-                if((task.dateCreated.after(filterStart) || task.dateCreated == filterStart) &&
-                    (task.dateCreated.before(filterEnd) || task.dateCreated == filterEnd)){
+                if(((task.dateCreated.after(filterStart) || task.dateCreated == filterStart) &&
+                    (task.dateCreated.before(filterEnd) || task.dateCreated == filterEnd)) && task.timeSheet.equals(SharedData.selectedTimeSheet)){
                     tasks += task
                 }
             }
@@ -131,15 +131,6 @@ class TimesheetViewPage : AppCompatActivity() {
                 tasks += task
             }
         }
-         populateTable(tasks)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun populateTable(tasks: List<Tasks>) {
-        val tableLayout = findViewById<TableLayout>(R.id.tableLayout)
-        // Clear existing table rows
-        tableLayout.removeAllViews()
-
         if (tasks.isEmpty()) {
             // Create a TextView to display a message
             val messageTextView = TextView(this)
@@ -155,6 +146,16 @@ class TimesheetViewPage : AppCompatActivity() {
             tableRow.addView(messageTextView)
             tableLayout.addView(tableRow)
         } else {
+            populateTable(tasks)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun populateTable(tasks: List<Tasks>) {
+        val tableLayout = findViewById<TableLayout>(R.id.tableLayout)
+        // Clear existing table rows
+        tableLayout.removeAllViews()
+
             // Create a TableRow for the heading
             val headingRow = TableRow(this)
 
@@ -179,124 +180,123 @@ class TimesheetViewPage : AppCompatActivity() {
 
             // Iterate over each task and create the necessary views
 
-        }
 
-        for (i in tasks.indices) {
-            val task = tasks[i]
+            for (i in tasks.indices) {
+                val task = tasks[i]
 
-            // Create a TableRow to hold the task information
-            val tableRow = TableRow(this)
+                // Create a TableRow to hold the task information
+                val tableRow = TableRow(this)
 
-            // Create and add the views for task information
-            val taskImage = ImageView(this)
-            val maxWidth = 10
-            val maxHeight = 10
-            val resizedBitmap = task.imgPicture?.let { resizeBitmap(it, 80, 80) }
-            taskImage.setImageBitmap(resizedBitmap)
-            taskImage.setOnClickListener {
-                showEnlargedImage(task.imgPicture)
-            }
-            val taskNumberTextView = createTextView("${i + 1}")
-            val taskNameTextView = createTextView(task.strTaskName)
-            val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val formattedDate = dateFormatter.format(task.dtEndDate)
-            val endDateTextView = createTextView(formattedDate + " at " + task.strEndTime)
-            val totalDuration = task.durTimeWorked
-            val hours = totalDuration.toHours()
-            val minutes = (totalDuration.toMinutes() % 60)
-            val seconds = (totalDuration.seconds % 60)
-
-            val formattedDuration = String.format("%02d:%02d:%02d", hours, minutes, seconds)
-            val hoursWorkedTextView = createTextView(formattedDuration)
-
-
-
-            // Add the task information views to the tableRow
-            tableRow.addView(taskImage)
-            tableRow.addView(taskNumberTextView)
-            tableRow.addView(taskNameTextView)
-            tableRow.addView(endDateTextView)
-            tableRow.addView(hoursWorkedTextView)
-
-            val startButton = Button(this)
-            startButton.text = "Start"
-            val startButtonLayoutParams = TableRow.LayoutParams(
-                resources.getDimensionPixelSize(R.dimen.button_width),
-                resources.getDimensionPixelSize(R.dimen.button_height)
-            )
-            startButtonLayoutParams.marginEnd = 8
-            startButton.layoutParams = startButtonLayoutParams
-            startButton.setPadding(16, 8, 16, 8)
-            startButton.setBackgroundResource(R.drawable.rounded_button_green)
-            startButton.setOnClickListener() {
-                taskStartTimeMap[i] = System.currentTimeMillis()
-
-                // Start the stopwatch by scheduling a periodic update of the button text
-                runnable = object : Runnable {
-                    override fun run() {
-                        val startTime = taskStartTimeMap[i] ?: return
-                        val elapsedTime = System.currentTimeMillis() - startTime
-
-                        // Calculate the hours, minutes, and seconds from the elapsed time
-                        val hours = elapsedTime / (1000 * 60 * 60)
-                        val minutes = (elapsedTime % (1000 * 60 * 60)) / (1000 * 60)
-                        val seconds = (elapsedTime % (1000 * 60)) / 1000
-
-                        // Format the time as a string and set it as the button text
-                        startButton.text = String.format("%02d:%02d:%02d", hours, minutes, seconds)
-
-                        // Schedule the next update after 1 second
-                        handler.postDelayed(this, 1000)
-                    }
+                // Create and add the views for task information
+                val taskImage = ImageView(this)
+                val maxWidth = 10
+                val maxHeight = 10
+                val resizedBitmap = task.imgPicture?.let { resizeBitmap(it, 80, 80) }
+                taskImage.setImageBitmap(resizedBitmap)
+                taskImage.setOnClickListener {
+                    showEnlargedImage(task.imgPicture)
                 }
-                // Start the initial update
-                handler.post(runnable)
-            }
-
-            tableRow.addView(startButton)
-
-            val stopButton = Button(this)
-            stopButton.text = "Stop"
-            val stopButtonLayoutParams = TableRow.LayoutParams(
-                resources.getDimensionPixelSize(R.dimen.button_width),
-                resources.getDimensionPixelSize(R.dimen.button_height)
-            )
-            stopButtonLayoutParams.marginStart = 8
-            stopButton.layoutParams = stopButtonLayoutParams
-            stopButton.setPadding(16, 8, 16, 8)
-            stopButton.setBackgroundResource(R.drawable.rounded_button_red)
-            stopButton.setOnClickListener(){
-                val startTime = taskStartTimeMap[i] ?: return@setOnClickListener
-                // Calculate the elapsed time in milliseconds
-                val elapsedTime = System.currentTimeMillis() - startTime
-
-                // Stop the stopwatch by removing the scheduled updates
-                handler.removeCallbacks(runnable)
-                val elapsedTimeDuration = Duration.ofMillis(elapsedTime)
-
-                // Calculate the hours worked
-                val totalDuration = task.durTimeWorked.plus(elapsedTimeDuration)
-                // Update the hours worked attribute of the respective task
-                task.durTimeWorked = totalDuration
-                task.updateCategoryHoursWorked(SharedData.lstCategories)
+                val taskNumberTextView = createTextView("${i + 1}")
+                val taskNameTextView = createTextView(task.strTaskName)
+                val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val formattedDate = dateFormatter.format(task.dtEndDate)
+                val endDateTextView = createTextView(formattedDate + " at " + task.strEndTime)
+                val totalDuration = task.durTimeWorked
                 val hours = totalDuration.toHours()
                 val minutes = (totalDuration.toMinutes() % 60)
                 val seconds = (totalDuration.seconds % 60)
 
                 val formattedDuration = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                val hoursWorkedTextView = createTextView(formattedDuration)
 
 
-                // Update the start button text back to "Start"
+                // Add the task information views to the tableRow
+                tableRow.addView(taskImage)
+                tableRow.addView(taskNumberTextView)
+                tableRow.addView(taskNameTextView)
+                tableRow.addView(endDateTextView)
+                tableRow.addView(hoursWorkedTextView)
+
+                val startButton = Button(this)
                 startButton.text = "Start"
-                hoursWorkedTextView.text = formattedDuration
+                val startButtonLayoutParams = TableRow.LayoutParams(
+                    resources.getDimensionPixelSize(R.dimen.button_width),
+                    resources.getDimensionPixelSize(R.dimen.button_height)
+                )
+                startButtonLayoutParams.marginEnd = 8
+                startButton.layoutParams = startButtonLayoutParams
+                startButton.setPadding(16, 8, 16, 8)
+                startButton.setBackgroundResource(R.drawable.rounded_button_green)
+                startButton.setOnClickListener() {
+                    taskStartTimeMap[i] = System.currentTimeMillis()
 
+                    // Start the stopwatch by scheduling a periodic update of the button text
+                    runnable = object : Runnable {
+                        override fun run() {
+                            val startTime = taskStartTimeMap[i] ?: return
+                            val elapsedTime = System.currentTimeMillis() - startTime
+
+                            // Calculate the hours, minutes, and seconds from the elapsed time
+                            val hours = elapsedTime / (1000 * 60 * 60)
+                            val minutes = (elapsedTime % (1000 * 60 * 60)) / (1000 * 60)
+                            val seconds = (elapsedTime % (1000 * 60)) / 1000
+
+                            // Format the time as a string and set it as the button text
+                            startButton.text =
+                                String.format("%02d:%02d:%02d", hours, minutes, seconds)
+
+                            // Schedule the next update after 1 second
+                            handler.postDelayed(this, 1000)
+                        }
+                    }
+                    // Start the initial update
+                    handler.post(runnable)
+                }
+
+                tableRow.addView(startButton)
+
+                val stopButton = Button(this)
+                stopButton.text = "Stop"
+                val stopButtonLayoutParams = TableRow.LayoutParams(
+                    resources.getDimensionPixelSize(R.dimen.button_width),
+                    resources.getDimensionPixelSize(R.dimen.button_height)
+                )
+                stopButtonLayoutParams.marginStart = 8
+                stopButton.layoutParams = stopButtonLayoutParams
+                stopButton.setPadding(16, 8, 16, 8)
+                stopButton.setBackgroundResource(R.drawable.rounded_button_red)
+                stopButton.setOnClickListener() {
+                    val startTime = taskStartTimeMap[i] ?: return@setOnClickListener
+                    // Calculate the elapsed time in milliseconds
+                    val elapsedTime = System.currentTimeMillis() - startTime
+
+                    // Stop the stopwatch by removing the scheduled updates
+                    handler.removeCallbacks(runnable)
+                    val elapsedTimeDuration = Duration.ofMillis(elapsedTime)
+
+                    // Calculate the hours worked
+                    val totalDuration = task.durTimeWorked.plus(elapsedTimeDuration)
+                    // Update the hours worked attribute of the respective task
+                    task.durTimeWorked = totalDuration
+                    task.updateCategoryHoursWorked(SharedData.lstCategories)
+                    val hours = totalDuration.toHours()
+                    val minutes = (totalDuration.toMinutes() % 60)
+                    val seconds = (totalDuration.seconds % 60)
+
+                    val formattedDuration = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+
+
+                    // Update the start button text back to "Start"
+                    startButton.text = "Start"
+                    hoursWorkedTextView.text = formattedDuration
+
+                }
+
+                tableRow.addView(stopButton)
+
+                // Add the tableRow to the TableLayout
+                tableLayout.addView(tableRow)
             }
-
-            tableRow.addView(stopButton)
-
-            // Add the tableRow to the TableLayout
-            tableLayout.addView(tableRow)
-        }
     }
 
     private fun showEnlargedImage(image: Bitmap?) {
