@@ -5,12 +5,15 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
 
 @Suppress("DEPRECATION")
 class ProfilePage : AppCompatActivity() {
@@ -20,6 +23,7 @@ class ProfilePage : AppCompatActivity() {
     }
 
     private var imgPicture: Bitmap? = null
+    private val storageRef = FirebaseStorage.getInstance().reference
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +33,16 @@ class ProfilePage : AppCompatActivity() {
         val progressIcon = findViewById<ImageView>(R.id.profile_progress_button)
         val timesheetIcon = findViewById<ImageView>(R.id.profile_timesheet_button)
         val addPictureButton = findViewById<ImageView>(R.id.Profilepage_uploadimage)
+
+        val profileImageRef = storageRef.child("${SharedData.currentUser}/profilePic/profile.jpg")
+        val MAX_SIZE_BYTES: Long = 1024 * 1024 // Maximum size of the downloaded image data
+        profileImageRef.getBytes(MAX_SIZE_BYTES).addOnSuccessListener { imageData ->
+            val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
+            // Use the bitmap as needed
+            imgPicture = bitmap
+            updateImageIcon()
+        }.addOnFailureListener {
+        }
 
 
         progressIcon.setOnClickListener {
@@ -111,6 +125,19 @@ class ProfilePage : AppCompatActivity() {
 
                 REQUEST_IMAGE_CAPTURE -> {
                     imgPicture = data?.extras?.get("data") as Bitmap
+                    if (imgPicture != null) {
+                        // Convert bitmap to byte array
+                        val stream = ByteArrayOutputStream()
+                        imgPicture?.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                        val imageData = stream.toByteArray()
+
+                        // Upload the byte array to Firebase Storage
+                        val storageRef = FirebaseStorage.getInstance().reference
+                        val taskImageRef =
+                            storageRef.child("${SharedData.currentUser}/profilePic/profile.jpg")
+
+                        taskImageRef.putBytes(imageData)
+                    }
                     updateImageIcon()
                 }
             }
@@ -121,6 +148,6 @@ class ProfilePage : AppCompatActivity() {
         val addPictureButton = findViewById<ImageView>(R.id.Profilepage_uploadimage)
         addPictureButton.background = null
         addPictureButton.setImageBitmap(imgPicture)
+        }
     }
 
-}

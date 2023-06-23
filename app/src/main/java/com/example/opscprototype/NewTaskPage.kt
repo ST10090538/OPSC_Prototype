@@ -1,12 +1,15 @@
 package com.example.opscprototype
 
 import android.annotation.SuppressLint
+
+import android.graphics.Bitmap
+import android.graphics.Bitmap.CompressFormat
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
@@ -17,9 +20,15 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import java.io.ByteArrayOutputStream
+import com.google.firebase.database.ktx.database
+import com.google.firebase.storage.FirebaseStorage
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -39,11 +48,13 @@ class NewTaskPage: AppCompatActivity() {
     private lateinit var categorySpinner: Spinner
     private var imgPicture: Bitmap? = null
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_task_page)
         newCat= intent.getStringExtra("newCat")
+        val database = Firebase.database("https://opsc-prototype-v2-default-rtdb.europe-west1.firebasedatabase.app/")
         val progressIcon = findViewById<ImageView>(R.id.newtask_progress_button)
         val profileIcon = findViewById<ImageView>(R.id.newtask_profile_button)
         val timesheetIcon = findViewById<ImageView>(R.id.newtask_timesheet_button)
@@ -56,24 +67,15 @@ class NewTaskPage: AppCompatActivity() {
         var maxHours = 0.00
         var startTime = ""
         var endTime = ""
-        val categoryList = SharedData.lstCategories
         BackButton_newtask()
 
-        if(categoryList.count() < 2) {
-            SharedData.lstCategories += categories("Web design")
-            SharedData.lstCategories += categories("App development")
-        }
-
-
         //Adds the new category to the array
-        if(newCat != "")
-            SharedData.lstCategories += categories(newCat.toString())
 
         categorySpinner = findViewById(R.id.categorySpinner)
         cats = emptyList()
 
         for(i in SharedData.lstCategories){
-            cats = cats + i.strName
+            cats += i.strName
         }
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, cats)
@@ -205,10 +207,24 @@ class NewTaskPage: AppCompatActivity() {
             val newTaskName = findViewById<EditText>(R.id.txtNewTaskName).text.toString()
             val description = findViewById<EditText>(R.id.txtNewTaskDesc).text.toString()
             val category = categorySpinner.selectedItem.toString()
-            val newTask = Tasks(newTaskName, category, description, startDate, endDate,startTime, endTime,
-                minHours, maxHours, imgPicture, SharedData.selectedTimeSheet)
-            SharedData.lstTasks += newTask
-            startActivity(Intent(this, TimesheetViewPage::class.java))
+            val newTask = Tasks(newTaskName, category, description, startDate, endDate, startTime, endTime,
+                minHours, maxHours, SharedData.selectedTimeSheet)
+            val tasksRef = database.getReference(SharedData.currentUser)
+            tasksRef.child("tasks").child(newTask.strTaskName).setValue(newTask)
+
+            if(imgPicture != null) {
+                // Convert bitmap to byte array
+                val stream = ByteArrayOutputStream()
+                imgPicture?.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                val imageData = stream.toByteArray()
+
+                // Upload the byte array to Firebase Storage
+                val storageRef = FirebaseStorage.getInstance().reference
+                val taskImageRef = storageRef.child("${SharedData.currentUser}/task_images/$newTaskName.jpg")
+
+                taskImageRef.putBytes(imageData)
+                startActivity(Intent(this, TimesheetViewPage::class.java))
+            }
         }
 
         newCategoryButton.setOnClickListener {
@@ -294,6 +310,7 @@ class NewTaskPage: AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categorySpinner.adapter = adapter
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -312,9 +329,11 @@ class NewTaskPage: AppCompatActivity() {
                     val newCat = data?.getStringExtra("newCat")
                     newCat?.let {
                         SharedData.lstCategories += categories(newCat)
-                        cats = emptyList()
-                        for(i in SharedData.lstCategories){
-                            cats = cats + i.strName
+                        for (i in SharedData.lstCategories) {
+                            val categoryName = i.strName
+                            if (!cats.contains(categoryName)) {
+                                cats += categoryName
+                            }
                         }
                         updateCategorySpinner()
                     }
