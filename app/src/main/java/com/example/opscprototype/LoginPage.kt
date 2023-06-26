@@ -19,6 +19,10 @@ class LoginPage : AppCompatActivity() {
     private var registeredUsername: String? = null
     private var registeredPassword: String? = null
 
+    companion object {
+        const val FIRST_SIGN_IN_ACHIEVEMENT = "firstSignInAchievement"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_page)
@@ -58,6 +62,14 @@ class LoginPage : AppCompatActivity() {
                         SharedData.currentUser = firebaseAuth.currentUser?.uid.toString()
                         startActivity(Intent(this, TimesheetPage::class.java))
                         finish()
+                        // Check if the achievement has been earned
+                        if (!isAchievementEarned(FIRST_SIGN_IN_ACHIEVEMENT)) {
+                            // Grant the achievement
+                            grantAchievement(FIRST_SIGN_IN_ACHIEVEMENT)
+                            // Show the achievement message
+                            val achievementMessage = getAchievementMessage(FIRST_SIGN_IN_ACHIEVEMENT)
+                            showAchievementMessage(achievementMessage)
+                        }
                     } else {
                         // User login failed
                         Toast.makeText(this, "Invalid username or password!", Toast.LENGTH_SHORT).show()
@@ -65,4 +77,25 @@ class LoginPage : AppCompatActivity() {
                 }
         }
     }
+    private fun isAchievementEarned(achievementId: String): Boolean {
+        val sharedPreferences = getSharedPreferences("achievements", MODE_PRIVATE)
+        return sharedPreferences.getBoolean(achievementId, false)
+    }
+
+    private fun grantAchievement(achievementId: String) {
+        val sharedPreferences = getSharedPreferences("achievements", MODE_PRIVATE)
+        sharedPreferences.edit().putBoolean(achievementId, true).apply()
+    }
+
+    private fun getAchievementMessage(achievementId: String): String {
+        return when (achievementId) {
+            FIRST_SIGN_IN_ACHIEVEMENT -> "Congratulations! You earned an achievement for signing in for the first time."
+            else -> ""
+        }
+    }
+
+    private fun showAchievementMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
 }

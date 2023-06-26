@@ -1,7 +1,6 @@
 package com.example.opscprototype
 
 import android.annotation.SuppressLint
-
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
 import android.app.AlertDialog
@@ -22,6 +21,7 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -49,6 +49,12 @@ class NewTaskPage: AppCompatActivity() {
     private var newCat: String? = null
     private lateinit var categorySpinner: Spinner
     private var imgPicture: Bitmap? = null
+
+    private fun showAchievementMessage(message: String) {
+
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SimpleDateFormat")
@@ -230,6 +236,14 @@ class NewTaskPage: AppCompatActivity() {
 
                 taskImageRef.putBytes(imageData)
                 startActivity(Intent(this, TimesheetViewPage::class.java))
+
+            // Show the achievement message
+            showAchievementMessage("Congratulations! You earned an achievement for creating a new task")
+
+            // Set the visibility of achievement2 to visible
+            val profilePageIntent = Intent(this, ProfilePage::class.java)
+            profilePageIntent.putExtra("showAchievement2", true)
+            startActivity(profilePageIntent)
 
         }
 
