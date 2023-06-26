@@ -9,6 +9,8 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap.createScaledBitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -212,19 +214,23 @@ class NewTaskPage: AppCompatActivity() {
             val tasksRef = database.getReference(SharedData.currentUser)
             tasksRef.child("tasks").child(newTask.strTaskName).setValue(newTask)
 
-            if(imgPicture != null) {
+            if(imgPicture == null){
+                imgPicture = BitmapFactory.decodeResource(resources, R.drawable.uploadicon)
+            }
+
                 // Convert bitmap to byte array
                 val stream = ByteArrayOutputStream()
                 imgPicture?.compress(Bitmap.CompressFormat.PNG, 100, stream)
                 val imageData = stream.toByteArray()
 
                 // Upload the byte array to Firebase Storage
+
                 val storageRef = FirebaseStorage.getInstance().reference
                 val taskImageRef = storageRef.child("${SharedData.currentUser}/task_images/$newTaskName.jpg")
 
                 taskImageRef.putBytes(imageData)
                 startActivity(Intent(this, TimesheetViewPage::class.java))
-            }
+
         }
 
         newCategoryButton.setOnClickListener {
