@@ -14,6 +14,7 @@ class ProgressPage : AppCompatActivity() {
         val timesheetIcon = findViewById<ImageView>(R.id.personalprogress_timesheet_icon)
         val profileIcon = findViewById<ImageView>(R.id.personalprogress_profile_icon)
         val personalProgressIcon = findViewById<Button>(R.id.progress_personalprogress_button)
+        val HoursworkedIcon = findViewById<Button>(R.id.hoursworked_button)
 
         timesheetIcon.setOnClickListener {
             startActivity(Intent(this, TimesheetPage::class.java))
@@ -25,6 +26,10 @@ class ProgressPage : AppCompatActivity() {
 
         profileIcon.setOnClickListener {
             startActivity(Intent(this, ProfilePage::class.java))
+        }
+
+        HoursworkedIcon.setOnClickListener {
+            startActivity(Intent(this, HoursWorkedPage::class.java))
         }
     }
 }

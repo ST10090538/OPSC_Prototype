@@ -46,22 +46,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/profile_timesheet_button" />
 
-    <TextView
-        android:id="@+id/colo6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="#00000000"
-        android:fontFamily="sans-serif-medium"
-        android:includeFontPadding="false"
-        android:text="Profile"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/Profilepage_uploadimage"
@@ -74,16 +58,32 @@
         android:tint="#00000000"
         app:layout_constraintBottom_toTopOf="@+id/profilepage_username_tv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/colo6" />
 
+    <TextView
+        android:id="@+id/colo6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:background="#00000000"
+        android:fontFamily="sans-serif-medium"
+        android:includeFontPadding="false"
+        android:text="Profile"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/profilepage_username_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="56dp"
         android:text="Username"
         android:textColor="#FFFFFF"
         android:textSize="30dp"
@@ -106,11 +106,11 @@
         android:textSize="30sp"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toTopOf="@+id/profile_timesheet_button"
-        app:layout_constraintEnd_toEndOf="@+id/profile_profile_button"
-        app:layout_constraintHorizontal_bias="0.531"
-        app:layout_constraintStart_toStartOf="@+id/profile_progress_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profilepage_username_tv"
-        app:layout_constraintVertical_bias="0.319" />
+        app:layout_constraintVertical_bias="0.254" />
 
     <LinearLayout
         android:id="@+id/achievements_container"

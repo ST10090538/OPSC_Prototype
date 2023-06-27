@@ -219,7 +219,7 @@ class TimesheetPage : AppCompatActivity() {
                 "App development",
                 "Design the user interface for a mobile application using Sketch or Figma",
                 Date(), Date(),
-                "09:00 AM", "11:00 AM",
+                "09:00 AM", "9:30 AM",
                 2.5, 5.0,
                  "Amazon"
             ).apply {
