@@ -1,11 +1,9 @@
 package com.example.opscprototype
 
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.widget.Button
 import android.widget.ImageView
@@ -14,14 +12,6 @@ import android.widget.Space
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
 import java.time.Duration
 import java.util.Calendar
 import java.util.Date
@@ -32,101 +22,54 @@ class TimesheetPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.timesheet_main_page)
 
-        val database = Firebase.database("https://opsc-prototype-v2-default-rtdb.europe-west1.firebasedatabase.app/")
         val progressIcon = findViewById<ImageView>(R.id.timesheet_progress_button)
         val profileIcon = findViewById<ImageView>(R.id.timesheet_profile_button)
         val newTimesheet = findViewById<ImageView>(R.id.timesheet_new_timesheet)
         val layout = findViewById<LinearLayout>(R.id.timesheet_button_layout)
         preloadData()
-        var timeSheets = emptyList<String>()
 
-        val timeSheetRef = database.getReference(SharedData.currentUser).child("timeSheets")
-        val timeSheetListener = object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (timesheet in snapshot.children) {
-                    timeSheets += timesheet.getValue().toString()
+        if(SharedData.lstTimesheets.isEmpty()){
+            SharedData.lstTimesheets += "Amazon"
+            SharedData.lstTimesheets += "Google"
+        }
+
+        for (timeSheet in SharedData.lstTimesheets) {
+            val timesheetName = timeSheet
+            if (timesheetName != null && timesheetName.isNotEmpty()) {
+                val button = Button(this)
+                button.text = timesheetName
+
+                // Set button attributes
+                button.layoutParams = LinearLayout.LayoutParams(
+                    resources.getDimensionPixelSize(R.dimen.new_button_width),
+                    resources.getDimensionPixelSize(R.dimen.new_button_height)
+                )
+                button.setPadding(
+                    resources.getDimensionPixelSize(R.dimen.button_padding_start),
+                    0,
+                    resources.getDimensionPixelSize(R.dimen.button_padding_end),
+                    0
+                )
+                button.backgroundTintList = ContextCompat.getColorStateList(this, R.color.blue)
+                button.setTextColor(ContextCompat.getColor(this, R.color.black))
+                button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24.toFloat())
+                button.setBackgroundResource(R.drawable.rounded_button)
+
+                // Add the button to the layout
+                layout.addView(button)
+
+                button.setOnClickListener(){
+                    SharedData.selectedTimeSheet = button.text.toString()
+                    startActivity(Intent(this, TimesheetViewPage::class.java))
                 }
-                if(snapshot.getValue()!=null) {
-                    SharedData.selectedTimeSheet = timeSheets.first()
 
-                    for (timeSheet in timeSheets) {
-                        val timesheetName = timeSheet
-                        if (timesheetName != null && timesheetName.isNotEmpty()) {
-                            val button = Button(this@TimesheetPage)
-                            button.text = timesheetName
-
-                            // Set button attributes
-                            button.layoutParams = LinearLayout.LayoutParams(
-                                resources.getDimensionPixelSize(R.dimen.new_button_width),
-                                resources.getDimensionPixelSize(R.dimen.new_button_height)
-                            )
-                            button.setPadding(
-                                resources.getDimensionPixelSize(R.dimen.button_padding_start),
-                                0,
-                                resources.getDimensionPixelSize(R.dimen.button_padding_end),
-                                0
-                            )
-                            button.backgroundTintList =
-                                ContextCompat.getColorStateList(this@TimesheetPage, R.color.blue)
-                            button.setTextColor(
-                                ContextCompat.getColor(
-                                    this@TimesheetPage,
-                                    R.color.black
-                                )
-                            )
-                            button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24.toFloat())
-                            button.setBackgroundResource(R.drawable.rounded_button)
-
-                            // Add the button to the layout
-                            layout.addView(button)
-
-                            button.setOnClickListener {
-                                SharedData.selectedTimeSheet = button.text.toString()
-                                startActivity(
-                                    Intent(
-                                        this@TimesheetPage,
-                                        TimesheetViewPage::class.java
-                                    )
-                                )
-                            }
-
-                            // Add space after the button
-                            val space = Space(this@TimesheetPage)
-                            space.layoutParams = LinearLayout.LayoutParams(5, 50)
-                            layout.addView(space)
-                        }
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
+                // Add space after the button
+                val space = Space(this)
+                space.layoutParams = LinearLayout.LayoutParams(5, 50)
+                layout.addView(space)
 
             }
         }
-        timeSheetRef.addValueEventListener(timeSheetListener)
-
-        val categoriesRef = database.getReference(SharedData.currentUser).child("categories")
-        val categoriesListener = object: ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val categories = mutableListOf<categories>()
-                for (categoriesSnapshot in dataSnapshot.children) {
-                    val cat = categoriesSnapshot.child("strName").getValue(String::class.java)
-                        ?.let { categories(it) }
-                    if (cat != null) {
-                        val time = categoriesSnapshot.child("hoursWorked").child("seconds").getValue(Long::class.java)
-                        if (time != null) {
-                            cat.hoursWorked = Duration.ofSeconds(time)
-                        }
-                        SharedData.lstCategories += cat
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-            }
-        }
-
-        categoriesRef.addValueEventListener(categoriesListener)
 
         progressIcon.setOnClickListener {
             startActivity(Intent(this, ProgressPage::class.java))
@@ -141,10 +84,8 @@ class TimesheetPage : AppCompatActivity() {
         }
     }
 
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun preloadData() {
-        val database = Firebase.database("https://opsc-prototype-v2-default-rtdb.europe-west1.firebasedatabase.app/")
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.YEAR, 2023)
         calendar.set(Calendar.MONTH, Calendar.JUNE)
@@ -159,7 +100,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "09:00 AM", "11:00 AM",
                 2.5, 5.0,
-                 "Amazon"
+                null, "Amazon"
             ).apply {
                 var workLog = workLog()
                 workLog.amountOfTimeWorked = Duration.ofHours(2)
@@ -179,7 +120,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "01:00 PM", "03:00 PM",
                 1.5, 3.0,
-                 "Amazon"
+                null, "Amazon"
             ).apply {
                 var workLog = workLog()
                 workLog.amountOfTimeWorked = Duration.ofHours(2)
@@ -199,7 +140,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "10:00 AM", "12:00 PM",
                 2.0, 4.0,
-                 "Amazon"
+                null, "Amazon"
             ).apply {
                 var workLog = workLog()
                 workLog.amountOfTimeWorked = Duration.ofHours(2)
@@ -221,7 +162,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "09:00 AM", "9:30 AM",
                 2.5, 5.0,
-                 "Amazon"
+                null, "Amazon"
             ).apply {
                 calendar.set(Calendar.YEAR, 2023)
                 calendar.set(Calendar.MONTH, Calendar.JUNE)
@@ -237,7 +178,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "01:00 PM", "03:00 PM",
                 1.5, 3.0,
-                 "Amazon"
+                null, "Amazon"
             ).apply {
                 calendar.set(Calendar.YEAR, 2023)
                 calendar.set(Calendar.MONTH, Calendar.JUNE)
@@ -253,7 +194,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "10:00 AM", "12:00 PM",
                 2.0, 4.0,
-                 "Amazon"
+                null, "Amazon"
             ).apply {
                 calendar.set(Calendar.YEAR, 2023)
                 calendar.set(Calendar.MONTH, Calendar.JUNE)
@@ -271,7 +212,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "09:00 AM", "11:00 AM",
                 2.5, 5.0,
-                 "Google"
+                null, "Google"
             ).apply {
                 calendar.set(Calendar.YEAR, 2023)
                 calendar.set(Calendar.MONTH, Calendar.JUNE)
@@ -287,7 +228,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "01:00 PM", "03:00 PM",
                 1.5, 3.0,
-                 "Google"
+                null, "Google"
             ).apply {
                 calendar.set(Calendar.YEAR, 2023)
                 calendar.set(Calendar.MONTH, Calendar.JUNE)
@@ -303,7 +244,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "10:00 AM", "12:00 PM",
                 2.0, 4.0,
-                 "Google"
+                null, "Google"
             ).apply {
                 calendar.set(Calendar.YEAR, 2023)
                 calendar.set(Calendar.MONTH, Calendar.JUNE)
@@ -321,7 +262,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "09:00 AM", "11:00 AM",
                 2.5, 5.0,
-                 "Google"
+                null, "Google"
             ).apply {
                 calendar.set(Calendar.YEAR, 2023)
                 calendar.set(Calendar.MONTH, Calendar.JUNE)
@@ -337,7 +278,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "01:00 PM", "03:00 PM",
                 1.5, 3.0,
-                 "Google"
+                null, "Google"
             ).apply {
                 calendar.set(Calendar.YEAR, 2023)
                 calendar.set(Calendar.MONTH, Calendar.JUNE)
@@ -353,7 +294,7 @@ class TimesheetPage : AppCompatActivity() {
                 Date(), Date(),
                 "10:00 AM", "12:00 PM",
                 2.0, 4.0,
-                 "Google"
+                null, "Google"
             ).apply {
                 calendar.set(Calendar.YEAR, 2023)
                 calendar.set(Calendar.MONTH, Calendar.JUNE)
@@ -364,20 +305,16 @@ class TimesheetPage : AppCompatActivity() {
             }
         )
 
-       /* val tasksRef = database.getReference(SharedData.currentUser).child("tasks")
-        for(task in tasks){
-                tasksRef.child(task.strTaskName).setValue(task)
-            }*/
-
+        SharedData.lstTasks = tasks
         var categories = SharedData.lstCategories
 
         // Preload categories
 
         if (categories.count() < 2) {
-          /*  SharedData.lstCategories += categories("Web design")
+            SharedData.lstCategories += categories("Web design")
             SharedData.lstCategories += categories("App development")
             SharedData.lstCategories += categories("Planning")
-            SharedData.lstCategories += categories("Project Management")*/
+            SharedData.lstCategories += categories("Project Management")
 
             for (cat in SharedData.lstCategories) {
                 if (cat.strName.equals("Web design")) {
@@ -472,9 +409,6 @@ class TimesheetPage : AppCompatActivity() {
                     workLog.dateWorked = date
                     cat.lstWorkLog += workLog
                 }
-              /*for(cat in SharedData.lstCategories){
-                    database.reference.child(SharedData.currentUser).child("categories").child(cat.strName).setValue(cat)
-                }*/
             }
         }
     }

@@ -3,7 +3,6 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.Typeface
 import android.os.Build
@@ -13,19 +12,13 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 import java.text.SimpleDateFormat
 import java.time.Duration
 import java.util.Calendar
@@ -71,7 +64,7 @@ class TimesheetViewPage : AppCompatActivity() {
             startActivity(intent)
         }
 
-        findViewById<Button>(R.id.btnStartDate).setOnClickListener() {
+        findViewById<Button>(R.id.btnStartDate).setOnClickListener(){
             val currentDate = Calendar.getInstance()
             val year = currentDate.get(Calendar.YEAR)
             val month = currentDate.get(Calendar.MONTH)
@@ -79,16 +72,9 @@ class TimesheetViewPage : AppCompatActivity() {
 
             val datePickerDialog = DatePickerDialog(
                 this,
-                { _, selectedYear, selectedMonth, selectedDay ->
+                DatePickerDialog.OnDateSetListener { _, selectedYear, selectedMonth, selectedDay ->
                     val calendar = Calendar.getInstance()
-                    calendar.set(
-                        selectedYear,
-                        selectedMonth,
-                        selectedDay,
-                        0,
-                        0,
-                        0
-                    ) // Set time to 23:59:59
+                    calendar.set(selectedYear, selectedMonth, selectedDay, 0, 0, 0) // Set time to 23:59:59
                     filterStart = calendar.time
 
                     val formattedDate = SimpleDateFormat("yyyy/MM/dd").format(filterStart)
@@ -112,14 +98,7 @@ class TimesheetViewPage : AppCompatActivity() {
                 this,
                 DatePickerDialog.OnDateSetListener { _, selectedYear, selectedMonth, selectedDay ->
                     val calendar = Calendar.getInstance()
-                    calendar.set(
-                        selectedYear,
-                        selectedMonth,
-                        selectedDay,
-                        23,
-                        59,
-                        59
-                    ) // Set time to 23:59:59
+                    calendar.set(selectedYear, selectedMonth, selectedDay, 23, 59, 59) // Set time to 23:59:59
                     filterEnd = calendar.time
 
                     val formattedDate = SimpleDateFormat("yyyy/MM/dd").format(filterEnd)
@@ -137,133 +116,42 @@ class TimesheetViewPage : AppCompatActivity() {
             var tasks = emptyList<Tasks>()
             for(task in SharedData.lstTasks){
                 if(((task.dateCreated.after(filterStart) || task.dateCreated == filterStart) &&
-                            (task.dateCreated.before(filterEnd) || task.dateCreated == filterEnd)) && task.timeSheet.equals(SharedData.selectedTimeSheet)){
+                    (task.dateCreated.before(filterEnd) || task.dateCreated == filterEnd)) && task.timeSheet.equals(SharedData.selectedTimeSheet)){
                     tasks += task
                 }
             }
             populateTable(tasks)
         }
 
-        val placeholderRow = TableRow(this@TimesheetViewPage)
-        val placeholderTextView = TextView(this@TimesheetViewPage)
-        placeholderTextView.text = "Loading..."
-        placeholderTextView.layoutParams = TableRow.LayoutParams(
-            TableRow.LayoutParams.WRAP_CONTENT,
-            TableRow.LayoutParams.WRAP_CONTENT
-        )
-        placeholderTextView.setPadding(16, 16, 16, 16)
 
-// Create layout parameters for the placeholder TextView
-        val placeholderTextViewParams = TableRow.LayoutParams()
-        placeholderTextViewParams.span = 7 // Set the span to the number of columns in your table
-        placeholderTextView.layoutParams = placeholderTextViewParams
-
-        placeholderRow.addView(placeholderTextView)
-        tableLayout.addView(placeholderRow)
-        val database = Firebase.database("https://opsc-prototype-v2-default-rtdb.europe-west1.firebasedatabase.app/")
-
-        val tasksReference = database.getReference(SharedData.currentUser).child("tasks")
-        val taskListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val calendar = Calendar.getInstance()
-                val tasks = mutableListOf<Tasks>()
-                for (taskSnapshot in dataSnapshot.children) {
-                    val taskMap = taskSnapshot.value as? Map<*, *>
-                    taskMap?.let {
-                        val strTaskName = it["strTaskName"] as? String
-                        val strCategory = it["strCategory"] as? String
-                        val strDescription = it["strDescription"] as? String
-                        val strStartTime = it["strStartTime"] as? String
-                        val strEndTime = it["strEndTime"] as? String
-                        val dblMinGoal = it["dblMinGoal"] as? Double
-                        val dblMaxGoal = it["dblMaxGoal"]?.toString()?.toDoubleOrNull()
-                        val timeSheet = it["timeSheet"] as? String
-                        val duration = taskSnapshot.child("durTimeWorked").child("seconds").value.toString().toLong()
-
-                        val yearCreated = taskSnapshot.child("dateCreated").child("year").value.toString().toInt()
-                        val monthCreated = taskSnapshot.child("dateCreated").child("month").value.toString().toInt()
-                        val dayCreated =  taskSnapshot.child("dateCreated").child("date").value.toString().toInt()
-                        calendar.set(Calendar.YEAR, (yearCreated + 1900))
-                        calendar.set(Calendar.MONTH, monthCreated)
-                        calendar.set(Calendar.DAY_OF_MONTH, dayCreated)
-                        val dateCreated = calendar.time
-
-                        val yearStart = taskSnapshot.child("dtStartDate").child("year").value.toString().toInt()
-                        val monthStart = taskSnapshot.child("dtStartDate").child("month").value.toString().toInt()
-                        val dayStart =  taskSnapshot.child("dtStartDate").child("date").value.toString().toInt()
-                        calendar.set(Calendar.YEAR, (yearStart + 1900))
-                        calendar.set(Calendar.MONTH, monthStart)
-                        calendar.set(Calendar.DAY_OF_MONTH, dayStart)
-                        val dtStartDate = calendar.time
-
-                        val yearEnd = taskSnapshot.child("dtEndDate").child("year").value.toString().toInt()
-                        val monthEnd = taskSnapshot.child("dtEndDate").child("month").value.toString().toInt()
-                        val dayEnd =  taskSnapshot.child("dtEndDate").child("date").value.toString().toInt()
-                        calendar.set(Calendar.YEAR, (yearEnd + 1900))
-                        calendar.set(Calendar.MONTH, monthEnd)
-                        calendar.set(Calendar.DAY_OF_MONTH, dayEnd)
-                        val dtEndDate = calendar.time
-
-
-
-                        // Create a new Tasks object with the retrieved data
-                        val task = Tasks(
-                            strTaskName ?: "",
-                            strCategory ?: "",
-                            strDescription ?: "",
-                            dtStartDate ?: Date(),
-                            dtEndDate ?: Date(),
-                            strStartTime ?: "",
-                            strEndTime ?: "",
-                            dblMinGoal ?: 0.0,
-                            dblMaxGoal ?: 0.0,
-                            timeSheet ?: "",
-                        )
-                        task.dateCreated = dateCreated
-                        task.durTimeWorked = Duration.ofSeconds(duration)
-                        val defaultImageResource = R.drawable.uploadicon
-                        task.imgPicture = BitmapFactory.decodeResource(resources, defaultImageResource)
-                        if (task != null && task.timeSheet == SharedData.selectedTimeSheet) {
-                            tasks.add(task)
-                            SharedData.lstTasks += task
-                        }
-                    }
-                }
-                if (tasks.isEmpty()) {
-                    // Remove the placeholder row
-                    tableLayout.removeView(placeholderRow)
-
-                    // Create a TextView for the "No tasks found" message
-                    val messageTextView = TextView(this@TimesheetViewPage)
-                    messageTextView.text = "No tasks found."
-                    messageTextView.layoutParams = TableLayout.LayoutParams(
-                        TableLayout.LayoutParams.WRAP_CONTENT,
-                        TableLayout.LayoutParams.WRAP_CONTENT
-                    )
-                    messageTextView.setPadding(16, 16, 16, 16)
-
-                    // Create a TableRow for the message
-                    val messageRow = TableRow(this@TimesheetViewPage)
-                    messageRow.addView(messageTextView)
-                    tableLayout.addView(messageRow)
-                } else {
-                    // Remove the placeholder row
-                    tableLayout.removeView(placeholderRow)
-                    populateTable(tasks)
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Handle the error
+        // Get the list of tasks from SharedData
+        var tasks = emptyList<Tasks>()
+        for(task in SharedData.lstTasks){
+            if(task.timeSheet.equals(SharedData.selectedTimeSheet)){
+                tasks += task
             }
         }
-        tasksReference.addValueEventListener(taskListener)
+        if (tasks.isEmpty()) {
+            // Create a TextView to display a message
+            val messageTextView = TextView(this)
+            messageTextView.text = "No tasks found."
+            messageTextView.layoutParams = TableLayout.LayoutParams(
+                TableLayout.LayoutParams.WRAP_CONTENT,
+                TableLayout.LayoutParams.WRAP_CONTENT
+            )
+            messageTextView.setPadding(16, 16, 16, 16)
+
+            // Add the messageTextView to the TableLayout
+            val tableRow = TableRow(this)
+            tableRow.addView(messageTextView)
+            tableLayout.addView(tableRow)
+        } else {
+            populateTable(tasks)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun populateTable(tasks: List<Tasks>) {
-        val database = Firebase.database("https://opsc-prototype-v2-default-rtdb.europe-west1.firebasedatabase.app/")
-        val storageRef = FirebaseStorage.getInstance().reference
         val tableLayout = findViewById<TableLayout>(R.id.tableLayout)
         // Clear existing table rows
         tableLayout.removeAllViews()
@@ -305,23 +193,9 @@ class TimesheetViewPage : AppCompatActivity() {
                 val maxHeight = 10
                 val resizedBitmap = task.imgPicture?.let { resizeBitmap(it, 80, 80) }
                 taskImage.setImageBitmap(resizedBitmap)
-                taskImage.setImageBitmap(task.imgPicture)
                 taskImage.setOnClickListener {
                     showEnlargedImage(task.imgPicture)
                 }
-
-                    val taskImageRef = storageRef.child("${SharedData.currentUser}/task_images/${task.strTaskName}.jpg")
-                    val MAX_SIZE_BYTES: Long = 1024 * 1024 // Maximum size of the downloaded image data
-                    taskImageRef.getBytes(MAX_SIZE_BYTES).addOnSuccessListener { imageData ->
-                        val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
-                        // Use the bitmap as needed
-                        task.imgPicture = bitmap
-                        val resizedBitmap = task.imgPicture?.let { resizeBitmap(it, 80, 80) }
-                        taskImage.setImageBitmap(resizedBitmap)
-                    }.addOnFailureListener {
-                    }
-
-
                 val taskNumberTextView = createTextView("${i + 1}")
                 val taskNameTextView = createTextView(task.strTaskName)
                 val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -334,6 +208,7 @@ class TimesheetViewPage : AppCompatActivity() {
 
                 val formattedDuration = String.format("%02d:%02d:%02d", hours, minutes, seconds)
                 val hoursWorkedTextView = createTextView(formattedDuration)
+
 
                 // Add the task information views to the tableRow
                 tableRow.addView(taskImage)
@@ -403,8 +278,6 @@ class TimesheetViewPage : AppCompatActivity() {
                     val totalDuration = task.durTimeWorked.plus(elapsedTimeDuration)
                     // Update the hours worked attribute of the respective task
                     task.durTimeWorked = totalDuration
-                    val durationSeconds = totalDuration.seconds.toInt()
-                    database.getReference(SharedData.currentUser).child("tasks").child(task.strTaskName).child("durTimeWorked").child("seconds").setValue(durationSeconds)
                     task.updateCategoryHoursWorked(SharedData.lstCategories)
                     val hours = totalDuration.toHours()
                     val minutes = (totalDuration.toMinutes() % 60)
@@ -439,11 +312,6 @@ class TimesheetViewPage : AppCompatActivity() {
 
         dialog.show()
     }
-    fun isTaskWithinFilter(task: Tasks): Boolean {
-        return (task.dateCreated >= filterStart || task.dateCreated == filterStart) &&
-                (task.dateCreated <= filterEnd || task.dateCreated == filterEnd) &&
-                task.timeSheet == SharedData.selectedTimeSheet
-    }
 
     private fun resizeBitmap(bitmap: Bitmap, maxWidth: Int, maxHeight: Int): Bitmap {
         val width = bitmap.width
@@ -475,6 +343,7 @@ class TimesheetViewPage : AppCompatActivity() {
     }
 
     private fun BackButton_TimesheetViewPage() {
+
         val click = findViewById<View>(R.id.BackButton_TimesheetViewPage)
         click.setOnClickListener {
             startActivity(Intent(this, TimesheetPage::class.java))

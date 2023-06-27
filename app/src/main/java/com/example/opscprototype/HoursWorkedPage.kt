@@ -53,9 +53,9 @@ class HoursWorkedPage : AppCompatActivity() {
         LineChart = findViewById(R.id.lineChart)
         setupLineChart()
         displayLineChart()
+
         val timesheetIcon = findViewById<ImageView>(R.id.personalprogress_timesheet_icon)
         val profileIcon = findViewById<ImageView>(R.id.personalprogress_profile_icon)
-
 
 
         profileIcon.setOnClickListener {

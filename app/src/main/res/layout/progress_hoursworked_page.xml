@@ -125,50 +125,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/start_date"
         app:layout_constraintTop_toBottomOf="@+id/colo2"
-        tools:ignore="SmallSp" />
+        tools:ignore="SmallSp,UnknownIdInLayout" />
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="match_parent"
-        android:layout_height="383dp"
-        android:layout_marginBottom="24dp"
-        android:contentDescription="@string/todo"
-        android:fillViewport="true"
-        android:keepScreenOn="false"
-        android:scrollbarAlwaysDrawHorizontalTrack="false"
-        android:scrollbarAlwaysDrawVerticalTrack="false"
-        android:scrollbarFadeDuration="0"
-        android:scrollbarStyle="insideOverlay"
-        android:scrollbarThumbHorizontal="@color/blue"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/personalprogress_progress_icon"
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChart"
+        android:layout_width="390dp"
+        android:layout_height="343dp"
+        app:layout_constraintBottom_toTopOf="@+id/personalprogress_timesheet_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_date"
-        tools:ignore="MissingClass">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChart"
-                android:layout_width="381dp"
-                android:layout_height="367dp">
-
-                <TextView
-                    android:id="@+id/hoursworked_month"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/january"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
-            </com.github.mikephil.charting.charts.LineChart>
-
-        </LinearLayout>
-    </ScrollView>
-
+        app:layout_constraintTop_toBottomOf="@+id/colo2"
+        tools:ignore="MissingConstraints"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

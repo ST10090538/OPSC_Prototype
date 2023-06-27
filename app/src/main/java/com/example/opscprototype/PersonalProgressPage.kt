@@ -44,6 +44,7 @@ class PersonalProgressPage : AppCompatActivity(), OnChartValueSelectedListener {
         val timesheetIcon = findViewById<ImageView>(R.id.personalprogress_timesheet_icon)
         BackButton_PersonalProgressPage()
 
+        SharedData.lstCategories
         val entries = mutableListOf<PieEntry>()
         var totalHoursWorked = Duration.ZERO
 

@@ -1,6 +1,7 @@
 package com.example.opscprototype
 
 import android.annotation.SuppressLint
+
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
 import android.app.AlertDialog
@@ -8,8 +9,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap.createScaledBitmap
-import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -21,7 +20,6 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -49,12 +47,6 @@ class NewTaskPage: AppCompatActivity() {
     private var newCat: String? = null
     private lateinit var categorySpinner: Spinner
     private var imgPicture: Bitmap? = null
-
-    private fun showAchievementMessage(message: String) {
-
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SimpleDateFormat")
@@ -220,31 +212,19 @@ class NewTaskPage: AppCompatActivity() {
             val tasksRef = database.getReference(SharedData.currentUser)
             tasksRef.child("tasks").child(newTask.strTaskName).setValue(newTask)
 
-            if(imgPicture == null){
-                imgPicture = BitmapFactory.decodeResource(resources, R.drawable.uploadicon)
-            }
-
+            if(imgPicture != null) {
                 // Convert bitmap to byte array
                 val stream = ByteArrayOutputStream()
                 imgPicture?.compress(Bitmap.CompressFormat.PNG, 100, stream)
                 val imageData = stream.toByteArray()
 
                 // Upload the byte array to Firebase Storage
-
                 val storageRef = FirebaseStorage.getInstance().reference
                 val taskImageRef = storageRef.child("${SharedData.currentUser}/task_images/$newTaskName.jpg")
 
                 taskImageRef.putBytes(imageData)
                 startActivity(Intent(this, TimesheetViewPage::class.java))
-
-            // Show the achievement message
-            showAchievementMessage("Congratulations! You earned an achievement for creating a new task")
-
-            // Set the visibility of achievement2 to visible
-            val profilePageIntent = Intent(this, ProfilePage::class.java)
-            profilePageIntent.putExtra("showAchievement2", true)
-            startActivity(profilePageIntent)
-
+            }
         }
 
         newCategoryButton.setOnClickListener {

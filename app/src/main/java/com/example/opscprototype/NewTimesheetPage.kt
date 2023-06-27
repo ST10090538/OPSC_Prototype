@@ -8,8 +8,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 class NewTimesheetPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,9 +44,7 @@ class NewTimesheetPage : AppCompatActivity() {
     }
     private fun saveTimesheetName(timesheetName: String) {
         if(!timesheetName.equals("")){
-            val database = Firebase.database("https://opsc-prototype-v2-default-rtdb.europe-west1.firebasedatabase.app/")
-            val timeSheetRef = database.getReference(SharedData.currentUser).child("timeSheets")
-            timeSheetRef.child("$timesheetName").setValue("$timesheetName")
+            SharedData.lstTimesheets += timesheetName
         }
     }
 }
