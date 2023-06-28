@@ -43,6 +43,7 @@ class HoursWorkedPage : AppCompatActivity() {
         val timesheetIcon = findViewById<ImageView>(R.id.personalprogress_timesheet_icon)
         val profileIcon = findViewById<ImageView>(R.id.personalprogress_profile_icon)
         tasksSpinner = findViewById(R.id.spinner)
+        BackButton_HoursWorkedPage()
 
         // Apply a filter start date
         findViewById<Button>(R.id.start_date).setOnClickListener {
@@ -86,7 +87,7 @@ class HoursWorkedPage : AppCompatActivity() {
                     findViewById<Button>(R.id.end_date).text = formattedDate
                 }
 
-                if(isFilterStartDate == false){
+                if (isFilterStartDate == false) {
                     populateTasksSpinner()
                 }
 
@@ -114,7 +115,12 @@ class HoursWorkedPage : AppCompatActivity() {
 
         tasksSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             @RequiresApi(Build.VERSION_CODES.S)
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 val selectedTask = filteredTasks[position]
                 updateGraph(selectedTask)
             }
@@ -157,7 +163,8 @@ class HoursWorkedPage : AppCompatActivity() {
                 logDate == currentDate
             }
 
-            val timeWorked = workLogEntry?.amountOfTimeWorked?.toMillis()?.toFloat()?.div(1000 * 3600) ?: 0f
+            val timeWorked =
+                workLogEntry?.amountOfTimeWorked?.toMillis()?.toFloat()?.div(1000 * 3600) ?: 0f
 
             entriesMinGoal.add(Entry(calendar.timeInMillis.toFloat(), minGoal))
             entriesMaxGoal.add(Entry(calendar.timeInMillis.toFloat(), maxGoal))
@@ -238,5 +245,13 @@ class HoursWorkedPage : AppCompatActivity() {
         }
 
         return filteredTasks
+    }
+
+    private fun BackButton_HoursWorkedPage() {
+
+        val click = findViewById<View>(R.id.BackButton_HoursWorkedPage)
+        click.setOnClickListener {
+            startActivity(Intent(this, ProgressPage::class.java))
+        }
     }
 }

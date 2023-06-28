@@ -8,6 +8,17 @@
     android:scrollbarStyle="insideInset"
     android:scrollbarThumbHorizontal="@color/blue">
 
+    <ImageView
+        android:id="@+id/BackButton_HoursWorkedPage"
+        android:layout_width="39dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/colo4"
+        app:layout_constraintHorizontal_bias="0.604"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_arrow_back_252" />
+
     <TextView
         android:id="@+id/colo4"
         android:layout_width="wrap_content"
@@ -24,6 +35,7 @@
         android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@+id/colo2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.076"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,7 +45,7 @@
         android:layout_height="55dp"
         android:layout_marginTop="33dp"
         android:background="@drawable/rounded_button"
-        android:backgroundTint="#249EE4"
+        android:backgroundTint="@color/blue"
         android:contentDescription="@string/todo"
         android:fontFamily="sans-serif-medium"
         android:gravity="center_vertical"
@@ -96,7 +108,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="64dp"
         android:layout_marginBottom="33dp"
-        android:backgroundTint="#249EE4"
+        android:backgroundTint="@color/blue"
         android:text="@string/start"
         android:textAlignment="center"
         android:textColor="#000000"
@@ -115,7 +127,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="74dp"
         android:layout_marginBottom="33dp"
-        android:backgroundTint="#249EE4"
+        android:backgroundTint="@color/blue"
         android:text="@string/end"
         android:textAlignment="center"
         android:textColor="#000000"
