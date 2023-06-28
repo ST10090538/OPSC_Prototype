@@ -117,7 +117,7 @@ class TimesheetPage : AppCompatActivity() {
                                 exists = true
                             }
                         }
-                        if(exists == false){
+                        if(exists == false || SharedData.lstCategories == emptyList<categories>()){
                             SharedData.lstCategories += cat
                         }
                     }
