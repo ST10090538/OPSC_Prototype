@@ -1,15 +1,23 @@
 package com.example.opscprototype
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginPage : AppCompatActivity() {
+
+    companion object {
+        const val ACHIEVEMENT_FIRST_LOGIN = "achievement_first_login"
+        const val PREFS_FILE_NAME = "achievements_prefs"
+        const val PREF_KEY_ACHIEVEMENT_PREFIX = "achievement_"
+    }
 
     private lateinit var editText2: EditText
     private lateinit var editTextTextPassword: EditText
@@ -19,13 +27,14 @@ class LoginPage : AppCompatActivity() {
     private var registeredUsername: String? = null
     private var registeredPassword: String? = null
 
-    companion object {
-        const val FIRST_SIGN_IN_ACHIEVEMENT = "firstSignInAchievement"
-    }
+    private lateinit var achievementsPrefs: SharedPreferences
+    private var isFirstLogin = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_page)
+
+        achievementsPrefs = getSharedPreferences(PREFS_FILE_NAME, MODE_PRIVATE)
 
         // Initialize Firebase Authentication
         firebaseAuth = FirebaseAuth.getInstance()
@@ -62,40 +71,41 @@ class LoginPage : AppCompatActivity() {
                         SharedData.currentUser = firebaseAuth.currentUser?.uid.toString()
                         startActivity(Intent(this, TimesheetPage::class.java))
                         finish()
-                        // Check if the achievement has been earned
-                        if (!isAchievementEarned(FIRST_SIGN_IN_ACHIEVEMENT)) {
-                            // Grant the achievement
-                            grantAchievement(FIRST_SIGN_IN_ACHIEVEMENT)
-                            // Show the achievement message
-                            val achievementMessage = getAchievementMessage(FIRST_SIGN_IN_ACHIEVEMENT)
-                            showAchievementMessage(achievementMessage)
-                        }
                     } else {
                         // User login failed
                         Toast.makeText(this, "Invalid username or password!", Toast.LENGTH_SHORT).show()
                     }
+
                 }
         }
-    }
-    private fun isAchievementEarned(achievementId: String): Boolean {
-        val sharedPreferences = getSharedPreferences("achievements", MODE_PRIVATE)
-        return sharedPreferences.getBoolean(achievementId, false)
-    }
-
-    private fun grantAchievement(achievementId: String) {
-        val sharedPreferences = getSharedPreferences("achievements", MODE_PRIVATE)
-        sharedPreferences.edit().putBoolean(achievementId, true).apply()
-    }
-
-    private fun getAchievementMessage(achievementId: String): String {
-        return when (achievementId) {
-            FIRST_SIGN_IN_ACHIEVEMENT -> "Congratulations! You earned an achievement for signing in for the first time."
-            else -> ""
+        // Check if the "First Login" achievement has already been achieved
+        if (isAchievementUnlocked(ACHIEVEMENT_FIRST_LOGIN).not()) {
+            showAchievementDialog("First Login")
+            setAchievementUnlocked(ACHIEVEMENT_FIRST_LOGIN)
         }
     }
+    private fun showAchievementDialog(achievementName: String) {
+        val dialogTitle = "Achievement Unlocked"
+        val dialogMessage = "Congratulations! You have unlocked the \"$achievementName\" achievement."
 
-    private fun showAchievementMessage(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        AlertDialog.Builder(this)
+            .setTitle(dialogTitle)
+            .setMessage(dialogMessage)
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            .show()
     }
 
+    private fun isAchievementUnlocked(achievementId: String): Boolean {
+        return achievementsPrefs.getBoolean(getAchievementPrefKey(achievementId), false)
+    }
+
+    private fun setAchievementUnlocked(achievementId: String) {
+        val editor = achievementsPrefs.edit()
+        editor.putBoolean(getAchievementPrefKey(achievementId), true)
+        editor.apply()
+    }
+
+    private fun getAchievementPrefKey(achievementId: String): String {
+        return PREF_KEY_ACHIEVEMENT_PREFIX + achievementId
+    }
 }
