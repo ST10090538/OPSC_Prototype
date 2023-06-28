@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap.createScaledBitmap
 import android.graphics.BitmapFactory
@@ -43,17 +44,17 @@ class NewTaskPage: AppCompatActivity() {
         const val REQUEST_IMAGE_CAPTURE = 2
         const val REQUEST_NEW_CATEGORY = 3
         const val CAMERA_PERMISSION_REQUEST_CODE = 4
+        const val ACHIEVEMENT_CREATE_NEW_TASK = "achievement_create_new_task"
+        const val PREFS_FILE_NAME = "achievements_prefs"
+        const val PREF_KEY_ACHIEVEMENT_PREFIX = "achievement_"
     }
     private var cats: List<String> = emptyList()
     private var newCat: String? = null
     private lateinit var categorySpinner: Spinner
     private var imgPicture: Bitmap? = null
 
-    private fun showAchievementMessage(message: String) {
-
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-
-    }
+    private lateinit var achievementsPrefs: SharedPreferences
+    private var isTaskCreated = false
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SimpleDateFormat")
@@ -75,6 +76,8 @@ class NewTaskPage: AppCompatActivity() {
         var startTime = ""
         var endTime = ""
         BackButton_newtask()
+
+        achievementsPrefs = getSharedPreferences(PREFS_FILE_NAME, MODE_PRIVATE)
 
         //Adds the new category to the array
 
@@ -237,13 +240,8 @@ class NewTaskPage: AppCompatActivity() {
             taskImageRef.putBytes(imageData)
             startActivity(Intent(this, TimesheetViewPage::class.java))
 
-            // Show the achievement message
-            showAchievementMessage("Congratulations! You earned an achievement for creating a new task")
-
-            // Set the visibility of achievement2 to visible
-            val profilePageIntent = Intent(this, ProfilePage::class.java)
-            profilePageIntent.putExtra("showAchievement2", true)
-            startActivity(profilePageIntent)
+            isTaskCreated = true
+            checkAchievements()
 
         }
 
@@ -266,6 +264,12 @@ class NewTaskPage: AppCompatActivity() {
         addPictureButton.setOnClickListener{
             showPictureDialog()
         }
+
+        if (isAchievementUnlocked(ACHIEVEMENT_CREATE_NEW_TASK).not()) {
+            showAchievementDialog("Create New Task")
+            setAchievementUnlocked(ACHIEVEMENT_CREATE_NEW_TASK)
+        }
+
 
     }
     //Allows the user to choose how to add a picture
@@ -374,5 +378,35 @@ class NewTaskPage: AppCompatActivity() {
         val addPictureButton = findViewById<ImageView>(R.id.newtask_uploadimage)
         addPictureButton.background = null
         addPictureButton.setImageBitmap(imgPicture)
+    }
+    private fun checkAchievements() {
+        if (isTaskCreated) {
+            val achievement2 = findViewById<ImageView>(R.id.achievement2)
+            achievement2.visibility = View.VISIBLE
+        }
+    }
+    private fun showAchievementDialog(achievementName: String) {
+        val dialogTitle = "Achievement Unlocked"
+        val dialogMessage = "Congratulations! You have unlocked the \"$achievementName\" achievement."
+
+        AlertDialog.Builder(this)
+            .setTitle(dialogTitle)
+            .setMessage(dialogMessage)
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            .show()
+    }
+
+    private fun isAchievementUnlocked(achievementId: String): Boolean {
+        return achievementsPrefs.getBoolean(getAchievementPrefKey(achievementId), false)
+    }
+
+    private fun setAchievementUnlocked(achievementId: String) {
+        val editor = achievementsPrefs.edit()
+        editor.putBoolean(getAchievementPrefKey(achievementId), true)
+        editor.apply()
+    }
+
+    private fun getAchievementPrefKey(achievementId: String): String {
+        return PREF_KEY_ACHIEVEMENT_PREFIX + achievementId
     }
 }
