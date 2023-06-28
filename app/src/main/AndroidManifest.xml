@@ -58,6 +58,9 @@
             android:name=".PersonalProgressPage"
             android:windowSoftInputMode="adjustPan"/>
         <activity
+            android:name=".HoursWorkedPage"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
             android:name=".NewTaskPage"
             android:windowSoftInputMode="adjustPan"/>
     </application>

@@ -125,17 +125,45 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/start_date"
         app:layout_constraintTop_toBottomOf="@+id/colo2"
-        tools:ignore="SmallSp,UnknownIdInLayout" />
+        tools:ignore="SmallSp" />
 
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/lineChart"
-        android:layout_width="390dp"
-        android:layout_height="343dp"
-        app:layout_constraintBottom_toTopOf="@+id/personalprogress_timesheet_icon"
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="383dp"
+        android:layout_marginBottom="24dp"
+        android:contentDescription="@string/todo"
+        android:fillViewport="true"
+        android:keepScreenOn="false"
+        android:scrollbarAlwaysDrawHorizontalTrack="false"
+        android:scrollbarAlwaysDrawVerticalTrack="false"
+        android:scrollbarFadeDuration="0"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbarThumbHorizontal="@color/blue"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/personalprogress_progress_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/colo2"
-        tools:ignore="MissingConstraints"/>
+        app:layout_constraintTop_toBottomOf="@+id/start_date"
+        tools:ignore="MissingClass">
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="16dp" />
+    </ScrollView>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="199dp"
+        android:layout_height="24dp"
+        android:backgroundTint="@color/white"
+        android:foregroundTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.309" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

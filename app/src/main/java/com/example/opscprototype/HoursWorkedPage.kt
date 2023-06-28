@@ -3,16 +3,17 @@ package com.example.opscprototype
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Spinner
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -20,43 +21,38 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
-import java.time.Duration
-import com.github.mikephil.charting.components.Description
-import com.github.mikephil.charting.components.Legend
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import java.util.*
-
+import java.util.TimeZone
 
 class HoursWorkedPage : AppCompatActivity() {
-    private lateinit var LineChart: LineChart
-    private var displayTasks = false
-    private var filterStart: Date? = null
-    private var filterEnd: Date? = null
+    private lateinit var filterStart: Date
+    private lateinit var filterEnd: Date
+    private lateinit var tasksSpinner: Spinner
 
-    lateinit var lineChart: LineChart
-    private val lstTasks = listOf("Task A", "Task B", "Task C") // Replace with your task data
-    private val lstWorklog = listOf(4f, 6f, 8f) // Replace with your worklog data
-
-    @RequiresApi(Build.VERSION_CODES.S)
-    @SuppressLint("MissingInflatedId")
-
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.progress_hoursworked_page)
-        LineChart = findViewById(R.id.lineChart)
-        setupLineChart()
-        displayLineChart()
 
+        // Initialize views
         val timesheetIcon = findViewById<ImageView>(R.id.personalprogress_timesheet_icon)
         val profileIcon = findViewById<ImageView>(R.id.personalprogress_profile_icon)
+        tasksSpinner = findViewById(R.id.spinner)
 
+        // Apply a filter start date
+        findViewById<Button>(R.id.start_date).setOnClickListener {
+            showDatePickerDialog(true)
+        }
+
+        // Apply a filter end date
+        findViewById<Button>(R.id.end_date).setOnClickListener {
+            showDatePickerDialog(false)
+        }
 
         profileIcon.setOnClickListener {
             startActivity(Intent(this, ProfilePage::class.java))
@@ -67,55 +63,180 @@ class HoursWorkedPage : AppCompatActivity() {
         }
     }
 
-    private fun setupLineChart() {
-        // Configure chart settings
-        lineChart.setTouchEnabled(true)
-        lineChart.setPinchZoom(true)
-        lineChart.description.isEnabled = false
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun showDatePickerDialog(isFilterStartDate: Boolean) {
+        val currentDate = Calendar.getInstance()
+        val year = currentDate.get(Calendar.YEAR)
+        val month = currentDate.get(Calendar.MONTH)
+        val day = currentDate.get(Calendar.DAY_OF_MONTH)
 
-        // Customize X-axis
-        val xAxis: XAxis = lineChart.xAxis
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.setDrawGridLines(false)
-        xAxis.valueFormatter = DayAxisValueFormatter()
 
-        // Customize Y-axis
-        val yAxis: YAxis = lineChart.axisLeft
-        yAxis.setDrawGridLines(false)
-        yAxis.axisMinimum = 0f
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, selectedYear, selectedMonth, selectedDay ->
+                val calendar = Calendar.getInstance()
+                calendar.set(selectedYear, selectedMonth, selectedDay, 0, 0, 0)
 
-        lineChart.axisRight.isEnabled = false
+                val formattedDate = SimpleDateFormat("yyyy/MM/dd").format(calendar.time)
+                if (isFilterStartDate) {
+                    filterStart = calendar.time
+                    findViewById<Button>(R.id.start_date).text = formattedDate
+                } else {
+                    filterEnd = calendar.time
+                    findViewById<Button>(R.id.end_date).text = formattedDate
+                }
+
+                if(isFilterStartDate == false){
+                    populateTasksSpinner()
+                }
+
+            },
+            year,
+            month,
+            day
+        )
+        datePickerDialog.show()
     }
 
-    private fun displayLineChart() {
-        val entries: MutableList<Entry> = ArrayList()
-        for (i in lstWorklog.indices) {
-            entries.add(Entry(i.toFloat(), lstWorklog[i]))
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun populateTasksSpinner() {
+        // Filter the tasks based on the selected dates
+        val filteredTasks = getFilteredTasks()
+
+        // Create an adapter and set it to the spinner
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            filteredTasks.map { it.strTaskName }
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        tasksSpinner.adapter = adapter
+
+        tasksSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            @RequiresApi(Build.VERSION_CODES.S)
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedTask = filteredTasks[position]
+                updateGraph(selectedTask)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun updateGraph(selectedTask: Tasks) {
+        val lineChart = findViewById<LineChart>(R.id.lineChart)
+
+        lineChart.clear()
+
+        val entriesMinGoal = mutableListOf<Entry>()
+        val entriesMaxGoal = mutableListOf<Entry>()
+        val entriesActualTime = mutableListOf<Entry>()
+
+        val startDate = filterStart
+        val endDate = filterEnd
+        val minGoal = selectedTask.dblMinGoal.toFloat()
+        val maxGoal = selectedTask.dblMaxGoal.toFloat()
+
+        val calendar = Calendar.getInstance()
+        calendar.time = startDate
+
+        val dateFormat = SimpleDateFormat("d MMM", Locale.getDefault())
+        calendar.set(Calendar.HOUR_OF_DAY, 12)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
+        dateFormat.timeZone = TimeZone.getDefault()
+        while (!calendar.time.after(endDate) || calendar.time == endDate) {
+            val currentDate = dateFormat.format(calendar.time)
+
+            val workLogEntry = selectedTask.lstWorkLog.find { workLog ->
+                val logDate = dateFormat.format(workLog.dateWorked)
+                logDate == currentDate
+            }
+
+            val timeWorked = workLogEntry?.amountOfTimeWorked?.toMillis()?.toFloat()?.div(1000 * 3600) ?: 0f
+
+            entriesMinGoal.add(Entry(calendar.timeInMillis.toFloat(), minGoal))
+            entriesMaxGoal.add(Entry(calendar.timeInMillis.toFloat(), maxGoal))
+            entriesActualTime.add(Entry(calendar.timeInMillis.toFloat(), timeWorked))
+
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
         }
 
-        val lineDataSet = LineDataSet(entries, "Total Hours Worked")
-        lineDataSet.setDrawFilled(true)
-        lineDataSet.fillColor = ColorTemplate.getHoloBlue()
-        lineDataSet.color = ColorTemplate.getHoloBlue()
-        lineDataSet.lineWidth = 2f
-        lineDataSet.valueTextSize = 12f
+        val dataSetMinGoal = LineDataSet(entriesMinGoal, "Min Goal")
+        dataSetMinGoal.color = ColorTemplate.COLORFUL_COLORS[0]
+        dataSetMinGoal.setDrawValues(false)
+        dataSetMinGoal.enableDashedLine(10f, 10f, 0f)
+        dataSetMinGoal.lineWidth = 2f
 
-        val lineData = LineData(lineDataSet)
-        lineChart.data = lineData
+        val dataSetMaxGoal = LineDataSet(entriesMaxGoal, "Max Goal")
+        dataSetMaxGoal.color = ColorTemplate.COLORFUL_COLORS[1]
+        dataSetMaxGoal.setDrawValues(false)
+        dataSetMaxGoal.enableDashedLine(10f, 10f, 0f)
+        dataSetMaxGoal.lineWidth = 2f
+
+        val dataSetActualTime = LineDataSet(entriesActualTime, "Actual Time")
+        dataSetActualTime.color = ColorTemplate.COLORFUL_COLORS[2]
+        dataSetActualTime.setDrawValues(false)
+        dataSetActualTime.lineWidth = 2f
+
+        val dataSets = mutableListOf<ILineDataSet>()
+        dataSets.add(dataSetMinGoal)
+        dataSets.add(dataSetMaxGoal)
+        dataSets.add(dataSetActualTime)
+        val data = LineData(dataSets)
+
+        lineChart.data = data
+        lineChart.description.isEnabled = false
+        lineChart.setTouchEnabled(true)
+        lineChart.isDragEnabled = true
+        lineChart.setScaleEnabled(true)
+        lineChart.setPinchZoom(true)
+
+        val xAxis: XAxis = lineChart.xAxis
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                val millis = value.toLong()
+                val date = Date(millis)
+                return dateFormat.format(date)
+            }
+        }
+
+        val yAxis: YAxis = lineChart.axisLeft
+        yAxis.setDrawGridLines(false)
+
+        lineChart.axisRight.isEnabled = false
+
         lineChart.invalidate()
     }
 
-    inner class DayAxisValueFormatter : ValueFormatter() {
-        private val dateFormat = SimpleDateFormat("MMM d", Locale.getDefault())
 
-        override fun getFormattedValue(value: Float, axis: AxisBase?): String {
-            val index = value.toInt()
-            return if (index >= 0 && index < lstTasks.size) {
-                dateFormat.format(Date()) // Replace with your date logic
-            } else {
-                ""
+    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("SuspiciousIndentation")
+    private fun getFilteredTasks(): List<Tasks> {
+        val tasksList: List<Tasks> = SharedData.lstTasks
+        val filteredTasks: MutableList<Tasks> = mutableListOf()
+
+        for (task in tasksList) {
+            var hasMatchingWorkLog = false
+
+            for (workLog in task.lstWorkLog) {
+                val logDate = workLog.dateWorked
+                if (logDate >= filterStart && logDate <= filterEnd) {
+                    hasMatchingWorkLog = true
+                    break
+                }
+            }
+
+            if (hasMatchingWorkLog) {
+                filteredTasks.add(task)
             }
         }
+
+        return filteredTasks
     }
 }
-

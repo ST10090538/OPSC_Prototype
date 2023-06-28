@@ -14,10 +14,14 @@ class ProgressPage : AppCompatActivity() {
         val timesheetIcon = findViewById<ImageView>(R.id.personalprogress_timesheet_icon)
         val profileIcon = findViewById<ImageView>(R.id.personalprogress_profile_icon)
         val personalProgressIcon = findViewById<Button>(R.id.progress_personalprogress_button)
-        val hoursworked_button = findViewById<Button>(R.id.hoursworked_button)
+        val hoursButton = findViewById<Button>(R.id.hoursworked_button)
 
         timesheetIcon.setOnClickListener {
             startActivity(Intent(this, TimesheetPage::class.java))
+        }
+
+        hoursButton.setOnClickListener {
+            startActivity(Intent(this, HoursWorkedPage::class.java))
         }
 
         personalProgressIcon.setOnClickListener {
@@ -26,10 +30,6 @@ class ProgressPage : AppCompatActivity() {
 
         profileIcon.setOnClickListener {
             startActivity(Intent(this, ProfilePage::class.java))
-        }
-
-        hoursworked_button.setOnClickListener {
-            startActivity(Intent(this, HoursWorkedPage::class.java))
         }
     }
 }
