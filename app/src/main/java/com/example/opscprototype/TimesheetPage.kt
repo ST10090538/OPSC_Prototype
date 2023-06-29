@@ -108,6 +108,26 @@ class TimesheetPage : AppCompatActivity() {
                     val cat = categoriesSnapshot.child("strName").getValue(String::class.java)
                         ?.let { categories(it) }
                     if (cat != null) {
+                        val workLogList = mutableListOf<workLog>()
+                        val lstWorkLogDataSnapshot = categoriesSnapshot.child("lstWorkLog")
+                        if (lstWorkLogDataSnapshot.key == "lstWorkLog") {
+                            val lstWorkLogChildren = lstWorkLogDataSnapshot.children
+                            workLogList.clear()
+                            for (workLogSnapshot in lstWorkLogChildren) {
+                                // Retrieve the properties of workLog from the database
+                                val dateWorked = workLogSnapshot.child("dateWorked").getValue(Date::class.java)
+                                val amountOfTimeWorkedSeconds = workLogSnapshot.child("amountOfTimeWorked").child("seconds").getValue(Long::class.java)
+                                val amountOfTimeWorked = Duration.ofSeconds(amountOfTimeWorkedSeconds ?: 0L)
+
+                                // Create a new workLog object with the retrieved data
+                                val workLog = workLog()
+                                workLog.dateWorked = dateWorked ?: Calendar.getInstance().time
+                                workLog.amountOfTimeWorked = amountOfTimeWorked
+
+                                cat.lstWorkLog += workLog
+                            }
+                        }
+
                         val time = categoriesSnapshot.child("hoursWorked").child("seconds").getValue(Long::class.java)
                         if (time != null) {
                             cat.hoursWorked = Duration.ofSeconds(time)

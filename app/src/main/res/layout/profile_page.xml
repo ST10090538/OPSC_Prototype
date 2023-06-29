@@ -116,44 +116,93 @@
         android:id="@+id/achievements_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/colo7">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.618">
 
         <ImageView
-            android:id="@+id/achievement1"
-            android:layout_width="50dp"
+            android:id="@+id/firstLoginAch"
+            android:layout_width="0dp"
             android:layout_height="50dp"
+            android:layout_margin="8dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="15dp"
+            android:layout_weight="1"
             android:src="@drawable/pie2"
-            android:layout_margin="8dp"
-            app:tint="@color/blue"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            app:tint="@color/blue" />
 
         <ImageView
-            android:id="@+id/achievement2"
-            android:layout_width="50dp"
+            android:id="@+id/firstTaskAch"
+            android:layout_width="0dp"
             android:layout_height="50dp"
+            android:layout_margin="8dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="15dp"
+            android:layout_weight="1"
             android:src="@drawable/pie3"
-            android:layout_margin="8dp"
-            app:tint="@color/blue"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            app:tint="@color/blue" />
 
         <ImageView
-            android:id="@+id/achievement3"
-            android:layout_width="50dp"
+            android:id="@+id/profilePicAch"
+            android:layout_width="0dp"
             android:layout_height="50dp"
+            android:layout_margin="8dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="15dp"
+            android:layout_weight="1"
             android:src="@drawable/pie4"
-            android:layout_margin="8dp"
-            app:tint="@color/blue"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            app:tint="@color/blue" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtFirstLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="First Login"
+        android:textColor="@color/white"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.127"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.669" />
+
+    <TextView
+        android:id="@+id/txtFirstTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="First task"
+        android:textColor="@color/white"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.669" />
+
+    <TextView
+        android:id="@+id/txtProfilePic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Profile Pic Uploaded"
+        android:textColor="@color/white"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.968"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.669" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

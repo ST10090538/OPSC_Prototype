@@ -75,6 +75,7 @@ class RegisterPage : AppCompatActivity() {
                         // User registration successful
                         Toast.makeText(this, "Registered Successfully!", Toast.LENGTH_SHORT).show()
 
+
                         val intent = Intent(this, LoginPage::class.java)
                         intent.putExtra("username", username)
                         intent.putExtra("password", password)
