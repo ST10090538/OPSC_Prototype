@@ -5,4 +5,5 @@ object SharedData {
         var lstCategories: List<categories> = emptyList()
         var currentUser = ""
         var selectedTimeSheet = ""
+        var achievements = Achievements()
 }

@@ -3,42 +3,55 @@ package com.example.opscprototype
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
 
 @Suppress("DEPRECATION")
 class ProfilePage : AppCompatActivity() {
     companion object {
         const val PICK_IMAGE_REQUEST = 1
         const val REQUEST_IMAGE_CAPTURE = 2
-        const val ACHIEVEMENT_UPLOAD_PROFILE_PICTURE = "achievement_upload_profile_picture"
-        const val PREFS_FILE_NAME = "achievements_prefs"
-        const val PREF_KEY_ACHIEVEMENT_PREFIX = "achievement_"
     }
 
     private var imgPicture: Bitmap? = null
-    private var isProfilePictureUploaded = false
-    private lateinit var achievementsPrefs: SharedPreferences
+    private val storageRef = FirebaseStorage.getInstance().reference
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profile_page)
 
-        achievementsPrefs = getSharedPreferences(PREFS_FILE_NAME, MODE_PRIVATE)
-
-
+        val database = Firebase.database("https://opsc-prototype-v2-default-rtdb.europe-west1.firebasedatabase.app/")
         val progressIcon = findViewById<ImageView>(R.id.profile_progress_button)
         val timesheetIcon = findViewById<ImageView>(R.id.profile_timesheet_button)
         val addPictureButton = findViewById<ImageView>(R.id.Profilepage_uploadimage)
+
+        checkAchievements()
+
+        val profileImageRef = storageRef.child("${SharedData.currentUser}/profilePic/profile.jpg")
+        val MAX_SIZE_BYTES: Long = 1024 * 1024 // Maximum size of the downloaded image data
+        profileImageRef.getBytes(MAX_SIZE_BYTES).addOnSuccessListener { imageData ->
+            val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
+            // Use the bitmap as needed
+            imgPicture = bitmap
+            updateImageIcon()
+        }.addOnFailureListener {
+        }
 
 
         progressIcon.setOnClickListener {
@@ -52,7 +65,10 @@ class ProfilePage : AppCompatActivity() {
         addPictureButton.setOnClickListener {
             showPictureDialog()
         }
+
     }
+
+
 
 
     //Allows the user to choose how to add a picture
@@ -72,6 +88,21 @@ class ProfilePage : AppCompatActivity() {
     private fun choosePhotoFromGallery() {
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(galleryIntent, NewTaskPage.PICK_IMAGE_REQUEST)
+    }
+
+    private fun checkAchievements(){
+        if(SharedData.achievements.firstLoginAchievement == true){
+            findViewById<ImageView>(R.id.firstLoginAch).isVisible = true
+            findViewById<TextView>(R.id.txtFirstLogin).isVisible = true
+        }
+        if(SharedData.achievements.firstTaskAchievement == true){
+            findViewById<ImageView>(R.id.firstTaskAch).isVisible = true
+            findViewById<TextView>(R.id.txtFirstTask).isVisible = true
+        }
+        if(SharedData.achievements.profilePicAchievement == true){
+            findViewById<ImageView>(R.id.profilePicAch).isVisible = true
+            findViewById<TextView>(R.id.txtProfilePic).isVisible = true
+        }
     }
 
     private fun takePhotoFromCamera() {
@@ -121,57 +152,35 @@ class ProfilePage : AppCompatActivity() {
 
                 REQUEST_IMAGE_CAPTURE -> {
                     imgPicture = data?.extras?.get("data") as Bitmap
-                    updateImageIcon()
+                    if (imgPicture != null) {
+                        // Convert bitmap to byte array
+                        val stream = ByteArrayOutputStream()
+                        imgPicture?.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                        val imageData = stream.toByteArray()
 
-                    if (isAchievementUnlocked(ACHIEVEMENT_UPLOAD_PROFILE_PICTURE).not()) {
-                        showAchievementDialog("Upload Profile Picture")
-                        setAchievementUnlocked(ACHIEVEMENT_UPLOAD_PROFILE_PICTURE)
+                        // Upload the byte array to Firebase Storage
+                        val storageRef = FirebaseStorage.getInstance().reference
+                        val taskImageRef =
+                            storageRef.child("${SharedData.currentUser}/profilePic/profile.jpg")
+
+                        taskImageRef.putBytes(imageData)
+                    }
+                    updateImageIcon()
+                    if(SharedData.achievements.profilePicAchievement == false){
+                        val database = Firebase.database("https://opsc-prototype-v2-default-rtdb.europe-west1.firebasedatabase.app/")
+                        database.getReference(SharedData.currentUser).child("Achievements").child("profilePicAchievement").setValue(true)
+                        SharedData.achievements.profilePicAchievement = true
+                        Toast.makeText(this@ProfilePage, "Achievement unlocked!\nProfile Picture Uploaded", Toast.LENGTH_SHORT).show()
+                        checkAchievements()
                     }
                 }
             }
         }
     }
 
-    private fun showAchievementDialog(achievementName: String) {
-        val dialogTitle = "Achievement Unlocked"
-        val dialogMessage = "Congratulations! You have unlocked the \"$achievementName\" achievement."
-
-        AlertDialog.Builder(this)
-            .setTitle(dialogTitle)
-            .setMessage(dialogMessage)
-            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            .show()
-    }
-
     private fun updateImageIcon() {
         val addPictureButton = findViewById<ImageView>(R.id.Profilepage_uploadimage)
-        addPictureButton.background = null
         addPictureButton.setImageBitmap(imgPicture)
-        isProfilePictureUploaded = true
-        checkAchievements()
-
     }
-
-    private fun checkAchievements() {
-        if (isProfilePictureUploaded) {
-            val achievement1 = findViewById<ImageView>(R.id.achievement1)
-            achievement1.visibility = View.VISIBLE
-        }
-    }
-
-    private fun isAchievementUnlocked(achievementId: String): Boolean {
-        return achievementsPrefs.getBoolean(getAchievementPrefKey(achievementId), false)
-    }
-
-    private fun setAchievementUnlocked(achievementId: String) {
-        val editor = achievementsPrefs.edit()
-        editor.putBoolean(getAchievementPrefKey(achievementId), true)
-        editor.apply()
-    }
-
-    private fun getAchievementPrefKey(achievementId: String): String {
-        return PREF_KEY_ACHIEVEMENT_PREFIX + achievementId
-    }
-
-
 }
+

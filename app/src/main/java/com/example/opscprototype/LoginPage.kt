@@ -10,31 +10,23 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class LoginPage : AppCompatActivity() {
-
-    companion object {
-        const val ACHIEVEMENT_FIRST_LOGIN = "achievement_first_login"
-        const val PREFS_FILE_NAME = "achievements_prefs"
-        const val PREF_KEY_ACHIEVEMENT_PREFIX = "achievement_"
-    }
 
     private lateinit var editText2: EditText
     private lateinit var editTextTextPassword: EditText
     private lateinit var registerpage_register_button: Button
     private lateinit var firebaseAuth: FirebaseAuth
 
-    private var registeredUsername: String? = null
-    private var registeredPassword: String? = null
-
-    private lateinit var achievementsPrefs: SharedPreferences
-    private var isFirstLogin = true
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_page)
-
-        achievementsPrefs = getSharedPreferences(PREFS_FILE_NAME, MODE_PRIVATE)
+        val database = Firebase.database("https://opsc-prototype-v2-default-rtdb.europe-west1.firebasedatabase.app/")
 
         // Initialize Firebase Authentication
         firebaseAuth = FirebaseAuth.getInstance()
@@ -69,6 +61,35 @@ class LoginPage : AppCompatActivity() {
 
                         // Set the current user
                         SharedData.currentUser = firebaseAuth.currentUser?.uid.toString()
+                        val achievementsRef = database.getReference(SharedData.currentUser)
+                        val achievementsListener = object: ValueEventListener{
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                if(dataSnapshot.hasChild("Achievements")){
+                                    SharedData.achievements.firstLoginAchievement =
+                                        dataSnapshot.child("Achievements").child("firstLoginAchievement").value as Boolean
+                                    SharedData.achievements.profilePicAchievement =
+                                        dataSnapshot.child("Achievements").child("profilePicAchievement").value as Boolean
+                                    SharedData.achievements.firstTaskAchievement =
+                                        dataSnapshot.child("Achievements").child("firstTaskAchievement").value as Boolean
+
+                                    if(SharedData.achievements.firstLoginAchievement == false){
+                                        achievementsRef.child("Achievements").child("firstLoginAchievement").setValue(true)
+                                        SharedData.achievements.firstLoginAchievement = true
+                                        Toast.makeText(this@LoginPage, "Achievement unlocked!\nFirst LOGIN", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                                else{
+                                    achievementsRef.child("Achievements").setValue(SharedData.achievements)
+                                }
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+
+                            }
+
+                        }
+                        achievementsRef.addValueEventListener(achievementsListener)
+
                         startActivity(Intent(this, TimesheetPage::class.java))
                         finish()
                     } else {
@@ -78,34 +99,5 @@ class LoginPage : AppCompatActivity() {
 
                 }
         }
-        // Check if the "First Login" achievement has already been achieved
-        if (isAchievementUnlocked(ACHIEVEMENT_FIRST_LOGIN).not()) {
-            showAchievementDialog("First Login")
-            setAchievementUnlocked(ACHIEVEMENT_FIRST_LOGIN)
-        }
-    }
-    private fun showAchievementDialog(achievementName: String) {
-        val dialogTitle = "Achievement Unlocked"
-        val dialogMessage = "Congratulations! You have unlocked the \"$achievementName\" achievement."
-
-        AlertDialog.Builder(this)
-            .setTitle(dialogTitle)
-            .setMessage(dialogMessage)
-            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            .show()
-    }
-
-    private fun isAchievementUnlocked(achievementId: String): Boolean {
-        return achievementsPrefs.getBoolean(getAchievementPrefKey(achievementId), false)
-    }
-
-    private fun setAchievementUnlocked(achievementId: String) {
-        val editor = achievementsPrefs.edit()
-        editor.putBoolean(getAchievementPrefKey(achievementId), true)
-        editor.apply()
-    }
-
-    private fun getAchievementPrefKey(achievementId: String): String {
-        return PREF_KEY_ACHIEVEMENT_PREFIX + achievementId
     }
 }
