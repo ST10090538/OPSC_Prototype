@@ -137,8 +137,6 @@ class PersonalProgressPage : AppCompatActivity(), OnChartValueSelectedListener {
         findViewById<Button>(R.id.btnApplyFilter).setOnClickListener(){
             val filteredEntries = mutableListOf<PieEntry>()
             var totalFilteredHoursWorked = Duration.ZERO
-            val start = filterStart
-            val end = filterEnd
             for (cat in SharedData.lstCategories) {
                 var filterCatHoursWorked = Duration.ZERO
                 val strCatName = cat.strName

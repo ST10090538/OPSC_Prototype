@@ -438,6 +438,7 @@ class TimesheetViewPage : AppCompatActivity() {
                 val minutes = (totalDuration.toMinutes() % 60)
                 val seconds = (totalDuration.seconds % 60)
                 val formattedDuration = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                val currentCat = SharedData.lstCategories.find { categories -> categories.strName == task.strCategory }
 
                 val calendar = Calendar.getInstance()
                 calendar.time = Date()
@@ -458,11 +459,18 @@ class TimesheetViewPage : AppCompatActivity() {
 
                 if (currentYear == lastWorkedYear && currentMonth == lastWorkedMonth && currentDay == lastWorkedDay) {
                     database.getReference(SharedData.currentUser).child("tasks").child(task.strTaskName).child("lstWorkLog").child(lastWorkedIndex.toString()).child("amountOfTimeWorked").setValue(lastWorkedTime + elapsedTimeDuration)
+                    if (currentCat != null) {
+                        database.getReference(SharedData.currentUser).child("categories").child(task.strCategory).child("lstWorkLog").child(currentCat.lstWorkLog.lastIndex.toString()).child("amountOfTimeWorked").setValue(currentCat.lstWorkLog.last().amountOfTimeWorked + elapsedTimeDuration)
+                    }
 
                 } else {
                     calendar.set(currentYear, currentMonth, currentDay)
                     database.getReference(SharedData.currentUser).child("tasks").child(task.strTaskName).child("lstWorkLog").child((lastWorkedIndex + 1).toString()).child("dateWorked").setValue(calendar.time)
                     database.getReference(SharedData.currentUser).child("tasks").child(task.strTaskName).child("lstWorkLog").child((lastWorkedIndex + 1).toString()).child("amountOfTimeWorked").setValue(elapsedTimeDuration)
+                    if (currentCat != null) {
+                        database.getReference(SharedData.currentUser).child("categories").child(task.strCategory).child("lstWorkLog").child((currentCat.lstWorkLog.lastIndex + 1).toString()).child("dateWorked").setValue(calendar.time)
+                        database.getReference(SharedData.currentUser).child("categories").child(task.strCategory).child("lstWorkLog").child((currentCat.lstWorkLog.lastIndex + 1).toString()).child("amountOfTimeWorked").setValue(elapsedTimeDuration)
+                    }
                 }
 
 

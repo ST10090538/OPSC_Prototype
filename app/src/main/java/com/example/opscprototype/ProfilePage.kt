@@ -36,7 +36,6 @@ class ProfilePage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profile_page)
 
-        val database = Firebase.database("https://opsc-prototype-v2-default-rtdb.europe-west1.firebasedatabase.app/")
         val progressIcon = findViewById<ImageView>(R.id.profile_progress_button)
         val timesheetIcon = findViewById<ImageView>(R.id.profile_timesheet_button)
         val addPictureButton = findViewById<ImageView>(R.id.Profilepage_uploadimage)
