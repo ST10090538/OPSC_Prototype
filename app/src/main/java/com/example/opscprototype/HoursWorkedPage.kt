@@ -3,6 +3,7 @@ package com.example.opscprototype
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -23,6 +24,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.github.mikephil.charting.utils.ColorTemplate.COLORFUL_COLORS
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -33,6 +35,7 @@ class HoursWorkedPage : AppCompatActivity() {
     private lateinit var filterStart: Date
     private lateinit var filterEnd: Date
     private lateinit var tasksSpinner: Spinner
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -136,6 +139,9 @@ class HoursWorkedPage : AppCompatActivity() {
 
         lineChart.clear()
 
+        val legend = lineChart.legend
+        legend.textColor = Color.WHITE
+
         val entriesMinGoal = mutableListOf<Entry>()
         val entriesMaxGoal = mutableListOf<Entry>()
         val entriesActualTime = mutableListOf<Entry>()
@@ -171,6 +177,8 @@ class HoursWorkedPage : AppCompatActivity() {
             entriesActualTime.add(Entry(calendar.timeInMillis.toFloat(), timeWorked))
 
             calendar.add(Calendar.DAY_OF_MONTH, 1)
+
+
         }
 
         val dataSetMinGoal = LineDataSet(entriesMinGoal, "Min Goal")
@@ -205,6 +213,7 @@ class HoursWorkedPage : AppCompatActivity() {
 
         val xAxis: XAxis = lineChart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.textColor = Color.WHITE
         xAxis.valueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
                 val millis = value.toLong()
@@ -215,11 +224,14 @@ class HoursWorkedPage : AppCompatActivity() {
 
         val yAxis: YAxis = lineChart.axisLeft
         yAxis.setDrawGridLines(false)
+        yAxis.textColor = Color.WHITE
 
         lineChart.axisRight.isEnabled = false
 
         lineChart.invalidate()
+
     }
+
 
 
     @RequiresApi(Build.VERSION_CODES.O)

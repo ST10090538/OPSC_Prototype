@@ -78,27 +78,25 @@
         android:id="@+id/personalprogress_timesheet_icon"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_marginTop="166dp"
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/todo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/personalprogress_profile_icon"
         app:layout_constraintStart_toEndOf="@+id/personalprogress_progress_icon"
-        app:srcCompat="@drawable/timehseetblack" />
+        app:srcCompat="@drawable/timehseetwhite" />
 
     <ImageView
         android:id="@+id/personalprogress_profile_icon"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="166dp"
         android:layout_marginEnd="45dp"
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/todo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/personalprogress_timesheet_icon"
-        app:srcCompat="@drawable/profileblack" />
+        app:srcCompat="@drawable/profilewhite" />
 
     <Button
         android:id="@+id/start_date"
