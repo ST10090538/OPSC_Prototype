@@ -14,7 +14,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/timeslice_icon"
-        android:label="@string/app_name"
+        android:label="TimeSlice"
         android:roundIcon="@mipmap/timeslice_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OPSCPrototype"
